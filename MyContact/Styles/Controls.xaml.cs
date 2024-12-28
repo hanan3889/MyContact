@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyContact
+namespace MyContact.Styles
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Controls.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Controls : UserControl
     {
-        public MainWindow()
+        public Controls()
         {
-            InitializeComponent();
+            //InitializeComponent();
         }
     }
 }
