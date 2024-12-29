@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyContact.Models
 {
-    class Salaries
+    public class Salaries
     {
         public int Id { get; set; }
         public string Nom { get; set; }
