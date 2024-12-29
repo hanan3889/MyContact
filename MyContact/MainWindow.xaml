@@ -1,12 +1,24 @@
-﻿<Window x:Class="MyContact.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyContact"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿<controls:MetroWindow x:Class="MyContact.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:MyContact"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      mc:Ignorable="d"
+                      Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <DataGrid x:Name="ContactsDataGrid"
+                  AutoGenerateColumns="False"
+                  Margin="10"
+                  ItemsSource="{Binding Salaries}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="NOM" Binding="{Binding Nom}" />
+                <DataGridTextColumn Header="PRENOM" Binding="{Binding Prenom}" />
+                <DataGridTextColumn Header="TELEPHONE FIXE" Binding="{Binding TelephoneFixe}" />
+                <DataGridTextColumn Header="TELEPHONE PORTABLE" Binding="{Binding TelephonePortable}" />
+                <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
-</Window>
+</controls:MetroWindow>
