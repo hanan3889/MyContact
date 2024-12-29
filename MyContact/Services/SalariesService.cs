@@ -16,7 +16,7 @@ namespace MyContact.Services
 
         public SalariesService()
         {
-            _baseUrl = "https://localhost:5110/api/salaries";
+            _baseUrl = "http://localhost:5110/api/salaries/"; 
             var handler = new HttpClientHandler();
             _httpClient = new HttpClient(handler) { BaseAddress = new Uri(_baseUrl) };
             _httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -25,10 +25,17 @@ namespace MyContact.Services
 
         public async Task<List<Salaries>> GetSalariesAsync()
         {
-            var response = await _httpClient.GetAsync("get/all");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Salaries>>(content);
+            try
+            {
+                var response = await _httpClient.GetAsync("get/all");
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<Salaries>>(content);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur lors de la récupération des salaires.", ex);
+            }
         }
     }
 }
