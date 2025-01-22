@@ -7,6 +7,57 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       mc:Ignorable="d"
                       Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <!-- Style for the button -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#339c33"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#339c33"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for DataGrid column headers -->
+        <Style x:Key="DataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#339c33"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#339c33"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- Style for DataGrid rows -->
+        <Style x:Key="DataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- Style for DataGrid cells -->
+        <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <StackPanel>
             <Button Content="Rechercher un salarié"
@@ -14,11 +65,15 @@
                     Height="30"
                     Margin="10"
                     HorizontalAlignment="Left"
-                    Command="{Binding OpenSearchSalaryViewCommand}" />
+                    Command="{Binding OpenSearchSalaryViewCommand}"
+                    Style="{StaticResource RoundedButtonStyle}" />
             <DataGrid x:Name="ContactsDataGrid"
                       AutoGenerateColumns="False"
                       Margin="10"
-                      ItemsSource="{Binding Salaries}">
+                      ItemsSource="{Binding Salaries}"
+                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                      RowStyle="{StaticResource DataGridRowStyle}"
+                      CellStyle="{StaticResource DataGridCellStyle}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
                     <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" />
@@ -30,5 +85,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
+        <Image Source="/Images/blocalimentation-logo.png" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100"/>
     </Grid>
 </controls:MetroWindow>
