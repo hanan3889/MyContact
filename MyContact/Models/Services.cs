@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyContact.Models
 {
-    class Services
+    public class Services
     {
+       public int Id { get; set; }
+       public string? Nom { get; set; }    
     }
 }

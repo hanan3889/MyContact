@@ -8,17 +8,27 @@
                       mc:Ignorable="d"
                       Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="ContactsDataGrid"
-                  AutoGenerateColumns="False"
-                  Margin="10"
-                  ItemsSource="{Binding Salaries}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="NOM" Binding="{Binding Nom}" />
-                <DataGridTextColumn Header="PRENOM" Binding="{Binding Prenom}" />
-                <DataGridTextColumn Header="TELEPHONE FIXE" Binding="{Binding TelephoneFixe}" />
-                <DataGridTextColumn Header="TELEPHONE PORTABLE" Binding="{Binding TelephonePortable}" />
-                <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <StackPanel>
+            <Button Content="Rechercher un salarié"
+                    Width="150"
+                    Height="30"
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    Command="{Binding OpenSearchSalaryViewCommand}" />
+            <DataGrid x:Name="ContactsDataGrid"
+                      AutoGenerateColumns="False"
+                      Margin="10"
+                      ItemsSource="{Binding Salaries}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
+                    <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" />
+                    <DataGridTextColumn Header="Téléphone portable" Binding="{Binding TelephonePortable}" />
+                    <DataGridTextColumn Header="Ligne fixe" Binding="{Binding TelephoneFixe}" />
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                    <DataGridTextColumn Header="Ville" Binding="{Binding SiteVille}" />
+                    <DataGridTextColumn Header="Service" Binding="{Binding ServiceNom}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </Grid>
 </controls:MetroWindow>
