@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyContact.Models
+﻿namespace MyContact.Models
 {
     public class Salaries
     {
@@ -15,7 +9,7 @@ namespace MyContact.Models
         public string? TelephonePortable { get; set; }
         public string? Email { get; set; }
 
-        // Foreign Key
+        
         public int ServiceId { get; set; }
         public Services? Service { get; set; }
 
@@ -25,5 +19,4 @@ namespace MyContact.Models
         public string? ServiceNom => Service?.Nom;
         public string? SiteVille => Site?.Ville;
     }
-
 }
