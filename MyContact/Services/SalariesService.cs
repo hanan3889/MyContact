@@ -44,6 +44,7 @@ namespace MyContact.Services
                 var response = await _httpClient.GetAsync($"get/name/{name}");
                 response.EnsureSuccessStatusCode();
                 var content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(content);
                 return JsonConvert.DeserializeObject<List<Salaries>>(content);
             }
             catch (Exception ex)

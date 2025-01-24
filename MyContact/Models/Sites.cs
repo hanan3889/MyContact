@@ -10,5 +10,6 @@ namespace MyContact.Models
     {
         public int Id { get; set; }
         public string? Ville { get; set; }
+
     }
 }

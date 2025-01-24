@@ -8,15 +8,9 @@
         public string? TelephoneFixe { get; set; }
         public string? TelephonePortable { get; set; }
         public string? Email { get; set; }
-
-        
         public int ServiceId { get; set; }
-        public Services? Service { get; set; }
-
+        public string? ServiceNom { get; set; }
         public int SiteId { get; set; }
-        public Sites? Site { get; set; }
-
-        public string? ServiceNom => Service?.Nom;
-        public string? SiteVille => Site?.Ville;
+        public string? SiteVille { get; set; }
     }
 }
