@@ -14,9 +14,9 @@ namespace MyContact
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(); // Assurez-vous que votre MainViewModel est correctement défini
+            DataContext = new MainViewModel(); 
             OpenSearchSalaryViewCommand = new RelayCommand(OpenSearchSalaryView);
-            this.DataContext = this; // Assurez-vous que le DataContext est défini sur cette instance
+            this.DataContext = this; 
         }
 
         private void OpenSearchSalaryView(object parameter)

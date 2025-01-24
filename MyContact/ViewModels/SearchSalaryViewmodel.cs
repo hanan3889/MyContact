@@ -11,14 +11,11 @@ namespace MyContact.ViewModels
         private readonly SalariesService _salariesService;
         private string _salaryName;
         private string _resultText;
-   
-
 
         public SearchSalaryViewModel()
         {
             _salariesService = new SalariesService();
             SearchCommand = new RelayCommand(SearchSalary);
- 
         }
 
         public string SalaryName
@@ -53,7 +50,7 @@ namespace MyContact.ViewModels
                     var result = new List<string>();
                     foreach (var salary in salaries)
                     {
-                        result.Add($"Nom: {salary.Nom}\nPrénom: {salary.Prenom}\nTéléphone Fixe: {salary.TelephoneFixe}\nTéléphone Portable: {salary.TelephonePortable}\nEmail: {salary.Email}\nService: {salary.Service?.Nom}\nVille: {salary.Site?.Ville}");
+                        result.Add($"Nom : {salary.Nom}\nPrénom : {salary.Prenom}\nTéléphone Fixe : {salary.TelephoneFixe}\nTéléphone Portable : {salary.TelephonePortable}\nEmail : {salary.Email}\nService : {salary.ServiceNom}\nVille : {salary.SiteVille}");
                     }
                     ResultText = string.Join("\n\n", result);
                 }
