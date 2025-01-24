@@ -64,6 +64,7 @@
                     Width="150"
                     Height="30"
                     Margin="10"
+                    Padding="0"
                     HorizontalAlignment="Left"
                     Command="{Binding OpenSearchSalaryViewCommand}"
                     Style="{StaticResource RoundedButtonStyle}" />
