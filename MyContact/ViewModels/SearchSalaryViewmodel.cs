@@ -11,11 +11,14 @@ namespace MyContact.ViewModels
         private readonly SalariesService _salariesService;
         private string _salaryName;
         private string _resultText;
+   
+
 
         public SearchSalaryViewModel()
         {
             _salariesService = new SalariesService();
             SearchCommand = new RelayCommand(SearchSalary);
+ 
         }
 
         public string SalaryName
