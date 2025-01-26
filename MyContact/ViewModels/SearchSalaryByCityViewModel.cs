@@ -6,7 +6,7 @@ using MyContact.Commands;
 
 namespace MyContact.ViewModels
 {
-    //gére la logique de recherche et les interactions avec la vue
+    // Gère la logique de recherche et les interactions avec la vue
     public class SearchSalaryByCityViewModel : ViewModelBase
     {
         private readonly SitesService _sitesService;
@@ -51,7 +51,7 @@ namespace MyContact.ViewModels
                     var result = new List<string>();
                     foreach (var salary in salaries)
                     {
-                        result.Add($"Nom : {salary.Nom}\nPrénom : {salary.Prenom}\nTéléphone Fixe : {salary.TelephoneFixe}\nTéléphone Portable : {salary.TelephonePortable}\nEmail : {salary.Email}\nService : {salary.Service?.Nom}\nVille : {salary.Site?.Ville}");
+                        result.Add($"Nom : {salary.Nom}\nPrénom : {salary.Prenom}\nTéléphone Fixe : {salary.TelephoneFixe}\nTéléphone Portable : {salary.TelephonePortable}\nEmail : {salary.Email}\nService : {salary.ServiceNom}\nVille : {salary.SiteVille}");
                     }
                     ResultText = string.Join("\n\n", result);
                 }

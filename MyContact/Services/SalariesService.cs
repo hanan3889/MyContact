@@ -52,5 +52,10 @@ namespace MyContact.Services
                 throw new Exception($" Pas de salarié trouvé à ce nom.", ex);
             }
         }
+
+        internal IEnumerable<Salaries> GetAllSalaries()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
