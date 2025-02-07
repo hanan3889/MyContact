@@ -10,13 +10,17 @@ namespace MyContact
     public partial class MainWindow : MetroWindow
     {
         public ICommand OpenSearchSalaryViewCommand { get; }
+        public ICommand OpenSearchSalaryByCityViewCommand { get; }
 
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(); 
+            DataContext = new MainViewModel();
+
             OpenSearchSalaryViewCommand = new RelayCommand(OpenSearchSalaryView);
-            this.DataContext = this; 
+            OpenSearchSalaryByCityViewCommand = new RelayCommand(OpenSearchSalaryByCityView);
+
+            this.DataContext = this;
         }
 
         private void OpenSearchSalaryView(object parameter)
@@ -26,6 +30,15 @@ namespace MyContact
                 DataContext = new SearchSalaryViewModel()
             };
             searchSalaryView.Show();
+        }
+
+        private void OpenSearchSalaryByCityView(object parameter)
+        {
+            var searchSalaryByCityView = new SearchSalaryByCityView
+            {
+                DataContext = new SearchSalaryByCityViewModel()
+            };
+            searchSalaryByCityView.Show();
         }
     }
 }
