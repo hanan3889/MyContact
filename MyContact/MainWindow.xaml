@@ -82,13 +82,20 @@
                     Padding="0"
                     Command="{Binding OpenSearchSalaryViewCommand}"
                     Style="{StaticResource RoundedButtonStyle}" />
-            <Button Content="Par site"
+            <Button Content="Par service"
                     Width="150"
                     Height="30"
                     Margin="47,10,-197,10"
                     Padding="0"
                     Command="{Binding OpenSearchSalaryByCityViewCommand}"
                     Style="{StaticResource RoundedButtonStyle}" Grid.Column="1" />
+            <Button Content="Par site"
+                Width="150"
+                Height="30"
+                Margin="247,10,-397,10"
+                Padding="0"
+                Command="{Binding OpenSearchSalaryByCityViewCommand}"
+                Style="{StaticResource RoundedButtonStyle}" Grid.Column="1" />
         </Grid>
 
         <DataGrid x:Name="ContactsDataGrid"
