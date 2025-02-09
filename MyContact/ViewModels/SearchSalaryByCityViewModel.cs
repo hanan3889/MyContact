@@ -5,91 +5,88 @@ using System.Windows.Input;
 using MyContact.Models;
 using MyContact.Services;
 using MyContact.Commands;
-using MyContact.ViewModels;
-using System.Windows.Controls;
 
-public class SearchSalaryByCityViewModel : ViewModelBase
+namespace MyContact.ViewModels
 {
-    private readonly SitesService _sitesService;
-    private string _cityName;
-    private string _resultText;
-    private ObservableCollection<Salaries> _salaries;
-
-    public SearchSalaryByCityViewModel()
+    public class SearchSalaryByCityViewModel : ViewModelBase
     {
-        _sitesService = new SitesService();
-        SearchCommand = new RelayCommand(SearchSalaryByCity);
-        _salaries = new ObservableCollection<Salaries>();
-    }
+        private readonly SitesService _sitesService;
+        private string _cityName;
+        private string _resultText;
+        private ObservableCollection<Salaries> _salaries;
 
-    public string CityName
-    {
-        get => _cityName;
-        set
+        public SearchSalaryByCityViewModel()
         {
-            _cityName = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string ResultText
-    {
-        get => _resultText;
-        set
-        {
-            _resultText = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<Salaries> Salaries
-    {
-        get => _salaries;
-        set
-        {
-            _salaries = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ICommand SearchCommand { get; }
-
-    private async void SearchSalaryByCity(object parameter)
-    {
-        if (string.IsNullOrWhiteSpace(CityName))
-        {
-            ResultText = "Veuillez entrer un nom de ville.";
-            return;
+            _sitesService = new SitesService();
+            SearchCommand = new RelayCommand(SearchSalaryByCity);
+            _salaries = new ObservableCollection<Salaries>();
         }
 
-        try
+        public string CityName
         {
-            string formattedCityName = char.ToUpper(CityName[0]) + CityName.Substring(1).ToLower();
-            var salaries = await _sitesService.GetSalariesByCityAsync(formattedCityName);
-
-            if (salaries != null && salaries.Count > 0)
+            get => _cityName;
+            set
             {
-                var result = new List<string>();
+                _cityName = value;
+                OnPropertyChanged();
+            }
+        }
 
-                foreach (var salary in salaries)
+        public string ResultText
+        {
+            get => _resultText;
+            set
+            {
+                _resultText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Salaries> Salaries
+        {
+            get => _salaries;
+            set
+            {
+                _salaries = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand SearchCommand { get; }
+
+        private async void SearchSalaryByCity(object parameter)
+        {
+            if (string.IsNullOrWhiteSpace(CityName))
+            {
+                ResultText = "Veuillez entrer un nom de ville.";
+                return;
+            }
+
+            try
+            {
+                string formattedCityName = char.ToUpper(CityName[0]) + CityName.Substring(1).ToLower();
+                var salaries = await _sitesService.GetSalariesByCityAsync(formattedCityName);
+
+                Salaries.Clear(); // Nettoyage avant ajout de nouveaux résultats
+
+                if (salaries != null && salaries.Count > 0)
                 {
-                    string serviceNom = salary.SiteId != 1 ? "Production" : salary.ServiceNom;
-                    string villeNom = salary.SiteVille ?? formattedCityName;
+                    foreach (var salary in salaries)
+                    {
+                        Salaries.Add(salary);
+                    }
 
-                    result.Add($"Nom : {salary.Nom}\nPrénom : {salary.Prenom}\nTéléphone Fixe : {salary.TelephoneFixe}\nTéléphone Portable : {salary.TelephonePortable}\nEmail : {salary.Email}\nService : {serviceNom}\nVille : {villeNom}");
+                    ResultText = $"{salaries.Count} salarié(s) trouvé(s).";
                 }
-
-                ResultText = string.Join("\n\n", result);
+                else
+                {
+                    ResultText = "Aucun salarié trouvé.";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Salaries.Clear();
-                ResultText = "Aucun salarié trouvé.";
+                ResultText = $"Erreur: {ex.Message}";
             }
-        }
-        catch (Exception ex)
-        {
-            ResultText = $"Erreur: {ex.Message}";
         }
     }
 }
