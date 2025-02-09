@@ -1,16 +1,29 @@
-﻿namespace MyContact.Models
+﻿using System.Text.Json.Serialization;
+
+namespace MyContact.Models
 {
     public class Salaries
     {
-        public int Id { get; set; }
+        [JsonPropertyName("nom")]
         public required string Nom { get; set; }
+
+        [JsonPropertyName("prenom")]
         public string? Prenom { get; set; }
+
+        [JsonPropertyName("telephoneFixe")]
         public string? TelephoneFixe { get; set; }
+
+        [JsonPropertyName("telephonePortable")]
         public string? TelephonePortable { get; set; }
+
+        [JsonPropertyName("email")]
         public string? Email { get; set; }
-        public int ServiceId { get; set; }
-        public string? ServiceNom { get; set; }
-        public int SiteId { get; set; }
+
+        [JsonPropertyName("siteVille")]
         public string? SiteVille { get; set; }
+
+        [JsonPropertyName("serviceNom")]
+        public string? ServiceNom { get; set; }
+        public int SiteId { get; internal set; }
     }
 }

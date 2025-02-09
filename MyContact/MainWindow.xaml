@@ -58,34 +58,66 @@
             <Setter Property="Padding" Value="5"/>
         </Style>
     </Window.Resources>
-    <Grid>
-        <StackPanel>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Grid for aligning buttons horizontally -->
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <Button Content="Rechercher un salarié"
                     Width="150"
                     Height="30"
                     Margin="10"
                     Padding="0"
-                    HorizontalAlignment="Left"
                     Command="{Binding OpenSearchSalaryViewCommand}"
                     Style="{StaticResource RoundedButtonStyle}" />
-            <DataGrid x:Name="ContactsDataGrid"
-                      AutoGenerateColumns="False"
-                      Margin="10"
-                      ItemsSource="{Binding Salaries}"
-                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                      RowStyle="{StaticResource DataGridRowStyle}"
-                      CellStyle="{StaticResource DataGridCellStyle}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
-                    <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" />
-                    <DataGridTextColumn Header="Téléphone portable" Binding="{Binding TelephonePortable}" />
-                    <DataGridTextColumn Header="Ligne fixe" Binding="{Binding TelephoneFixe}" />
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
-                    <DataGridTextColumn Header="Ville" Binding="{Binding SiteVille}" />
-                    <DataGridTextColumn Header="Service" Binding="{Binding ServiceNom}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
-        <Image Source="/Images/blocalimentation-logo.png" HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" Height="300" Margin="0,124,0,0"/>
+            <Button Content="Par site"
+                    Width="150"
+                    Height="30"
+                    Margin="47,10,-197,10"
+                    Padding="0"
+                    Command="{Binding OpenSearchSalaryByCityViewCommand}"
+                    Style="{StaticResource RoundedButtonStyle}" Grid.Column="1" />
+        </Grid>
+
+        <DataGrid x:Name="ContactsDataGrid"
+                  Grid.Row="1"
+                  Grid.ColumnSpan="2"
+                  AutoGenerateColumns="False"
+                  Margin="10"
+                  ItemsSource="{Binding Salaries}"
+                  ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                  RowStyle="{StaticResource DataGridRowStyle}"
+                  CellStyle="{StaticResource DataGridCellStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
+                <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" />
+                <DataGridTextColumn Header="Téléphone portable" Binding="{Binding TelephonePortable}" />
+                <DataGridTextColumn Header="Ligne fixe" Binding="{Binding TelephoneFixe}" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                <DataGridTextColumn Header="Ville" Binding="{Binding SiteVille}" />
+                <DataGridTextColumn Header="Service" Binding="{Binding ServiceNom}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Image Source="/Images/blocalimentation-logo.png"
+               Grid.Row="2"
+               Grid.ColumnSpan="2"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               Width="300"
+               Height="300"
+               Margin="0,10,0,0"/>
     </Grid>
 </controls:MetroWindow>
