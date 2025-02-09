@@ -11,6 +11,7 @@ namespace MyContact
     {
         public ICommand OpenSearchSalaryViewCommand { get; }
         public ICommand OpenSearchSalaryByCityViewCommand { get; }
+        public ICommand OpenSearchSalaryByServiceViewCommand { get; }
 
         public MainWindow()
         {
@@ -19,6 +20,7 @@ namespace MyContact
 
             OpenSearchSalaryViewCommand = new RelayCommand(OpenSearchSalaryView);
             OpenSearchSalaryByCityViewCommand = new RelayCommand(OpenSearchSalaryByCityView);
+            OpenSearchSalaryByServiceViewCommand = new RelayCommand(OpenSearchSalaryByServiceView);
 
             this.DataContext = this;
         }
@@ -39,6 +41,15 @@ namespace MyContact
                 DataContext = new SearchSalaryByCityViewModel()
             };
             searchSalaryByCityView.Show();
+        }
+
+        private void OpenSearchSalaryByServiceView(object parameter)
+        {
+            var searchSalaryByServiceView = new SearchSalaryByServiceView
+            {
+                DataContext = new SearchSalaryByServiceViewModel()
+            };
+            searchSalaryByServiceView.Show();
         }
     }
 }
