@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MyContact.Models;
 using MyContact.Services;
 using MyContact.Commands;
-using MyContact.ViewModels;
 
 namespace MyContact.ViewModels
 {
@@ -68,23 +68,19 @@ namespace MyContact.ViewModels
                 string formattedServiceName = char.ToUpper(ServiceName[0]) + ServiceName.Substring(1).ToLower();
                 var salaries = await _servicesService.GetSalariesByServiceNameAsync(formattedServiceName);
 
+                Salaries.Clear();
+
                 if (salaries != null && salaries.Count > 0)
                 {
-                    var result = new List<string>();
-
                     foreach (var salary in salaries)
                     {
-                        string serviceNom = salary.ServiceNom;
-                        string villeNom = salary.SiteVille;
-
-                        result.Add($"Nom : {salary.Nom}\nService : {serviceNom}\nVille : {villeNom}");
+                        Salaries.Add(salary);
                     }
 
-                    ResultText = string.Join("\n\n", result);
+                    ResultText = $"{salaries.Count} salarié(s) trouvé(s).";
                 }
                 else
                 {
-                    Salaries.Clear();
                     ResultText = "Aucun salarié trouvé.";
                 }
             }
