@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MyContact.Models;
@@ -8,26 +9,26 @@ using MyContact.Commands;
 
 namespace MyContact.ViewModels
 {
-    public class SearchSalaryByCityViewModel : ViewModelBase
+    public class SearchSalaryByServiceViewModel : ViewModelBase
     {
-        private readonly SitesService _sitesService;
-        private string _cityName;
+        private readonly ServicesService _servicesService;
+        private string _serviceName;
         private string _resultText;
         private ObservableCollection<Salaries> _salaries;
 
-        public SearchSalaryByCityViewModel()
+        public SearchSalaryByServiceViewModel()
         {
-            _sitesService = new SitesService();
-            SearchCommand = new RelayCommand(SearchSalaryByCity);
+            _servicesService = new ServicesService();
+            SearchCommand = new RelayCommand(SearchSalaryByService);
             _salaries = new ObservableCollection<Salaries>();
         }
 
-        public string CityName
+        public string ServiceName
         {
-            get => _cityName;
+            get => _serviceName;
             set
             {
-                _cityName = value;
+                _serviceName = value;
                 OnPropertyChanged();
             }
         }
@@ -54,20 +55,20 @@ namespace MyContact.ViewModels
 
         public ICommand SearchCommand { get; }
 
-        private async void SearchSalaryByCity(object parameter)
+        private async void SearchSalaryByService(object parameter)
         {
-            if (string.IsNullOrWhiteSpace(CityName))
+            if (string.IsNullOrWhiteSpace(ServiceName))
             {
-                ResultText = "Veuillez entrer un nom de ville.";
+                ResultText = "Veuillez entrer un nom de service.";
                 return;
             }
 
             try
             {
-                string formattedCityName = char.ToUpper(CityName[0]) + CityName.Substring(1).ToLower();
-                var salaries = await _sitesService.GetSalariesByCityAsync(formattedCityName);
+                string formattedServiceName = char.ToUpper(ServiceName[0]) + ServiceName.Substring(1).ToLower();
+                var salaries = await _servicesService.GetSalariesByServiceNameAsync(formattedServiceName);
 
-                Salaries.Clear(); // Nettoyage avant ajout de nouveaux résultats
+                Salaries.Clear();
 
                 if (salaries != null && salaries.Count > 0)
                 {

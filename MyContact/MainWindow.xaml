@@ -4,11 +4,13 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:MyContact"
-                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
+                      xmlns:viewmodels="clr-namespace:MyContact.ViewModels" 
+                      d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
                       mc:Ignorable="d"
                       Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <!-- Style for the button -->
+        <!-- Style for buttons -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#339c33"/>
             <Setter Property="Foreground" Value="White"/>
@@ -30,51 +32,22 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!-- Style for DataGrid column headers -->
-        <Style x:Key="DataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#339c33"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#339c33"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
-
-        <!-- Style for DataGrid rows -->
-        <Style x:Key="DataGridRowStyle" TargetType="DataGridRow">
-            <Setter Property="Background" Value="LightGray"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
-
-        <!-- Style for DataGrid cells -->
-        <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
     </Window.Resources>
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <!-- Grid for aligning buttons horizontally -->
         <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+
             <Button Content="Rechercher un salarié"
                     Width="150"
                     Height="30"
@@ -82,13 +55,22 @@
                     Padding="0"
                     Command="{Binding OpenSearchSalaryViewCommand}"
                     Style="{StaticResource RoundedButtonStyle}" />
+
+            <Button Content="Par service"
+                    Width="150"
+                    Height="30"
+                    Margin="10"
+                    Padding="0"
+                    Command="{Binding OpenSearchSalaryByServiceViewCommand}"
+                    Style="{StaticResource RoundedButtonStyle}" Grid.Column="1" />
+
             <Button Content="Par site"
                     Width="150"
                     Height="30"
-                    Margin="47,10,-197,10"
+                    Margin="10"
                     Padding="0"
                     Command="{Binding OpenSearchSalaryByCityViewCommand}"
-                    Style="{StaticResource RoundedButtonStyle}" Grid.Column="1" />
+                    Style="{StaticResource RoundedButtonStyle}" Grid.Column="2" />
         </Grid>
 
         <DataGrid x:Name="ContactsDataGrid"
@@ -96,10 +78,7 @@
                   Grid.ColumnSpan="2"
                   AutoGenerateColumns="False"
                   Margin="10"
-                  ItemsSource="{Binding Salaries}"
-                  ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                  RowStyle="{StaticResource DataGridRowStyle}"
-                  CellStyle="{StaticResource DataGridCellStyle}">
+                  ItemsSource="{Binding Salaries}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
                 <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" />
