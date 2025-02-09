@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MyContact.Models;
 using MyContact.Services;
 using MyContact.Commands;
 using MyContact.ViewModels;
+using System.Windows.Controls;
 
 public class SearchSalaryByCityViewModel : ViewModelBase
 {
@@ -56,8 +56,6 @@ public class SearchSalaryByCityViewModel : ViewModelBase
 
     private async void SearchSalaryByCity(object parameter)
     {
-        Debug.WriteLine($"🔎 Recherche en cours pour la ville : {CityName}");
-
         if (string.IsNullOrWhiteSpace(CityName))
         {
             ResultText = "Veuillez entrer un nom de ville.";
@@ -66,19 +64,22 @@ public class SearchSalaryByCityViewModel : ViewModelBase
 
         try
         {
-            var salariesList = await _sitesService.GetSalariesByCityAsync(CityName);
-            Debug.WriteLine($"✅ {salariesList.Count} salarié(s) trouvés.");
+            string formattedCityName = char.ToUpper(CityName[0]) + CityName.Substring(1).ToLower();
+            var salaries = await _sitesService.GetSalariesByCityAsync(formattedCityName);
 
-            if (salariesList != null && salariesList.Count > 0)
+            if (salaries != null && salaries.Count > 0)
             {
-                Salaries.Clear();  // On vide la liste avant d'ajouter de nouveaux résultats
-                foreach (var salary in salariesList)
+                var result = new List<string>();
+
+                foreach (var salary in salaries)
                 {
-                    Debug.WriteLine($"📌 Ajout : {salary.Nom} - {salary.Service?.Nom ?? "Service NULL"} - {salary.Site?.Ville ?? "Ville NULL"}");
-                    Salaries.Add(salary);
+                    string serviceNom = salary.SiteId != 1 ? "Production" : salary.ServiceNom;
+                    string villeNom = salary.SiteVille ?? formattedCityName;
+
+                    result.Add($"Nom : {salary.Nom}\nPrénom : {salary.Prenom}\nTéléphone Fixe : {salary.TelephoneFixe}\nTéléphone Portable : {salary.TelephonePortable}\nEmail : {salary.Email}\nService : {serviceNom}\nVille : {villeNom}");
                 }
 
-                ResultText = $"{salariesList.Count} salarié(s) trouvé(s).";
+                ResultText = string.Join("\n\n", result);
             }
             else
             {
@@ -88,7 +89,6 @@ public class SearchSalaryByCityViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ Erreur : {ex.Message}");
             ResultText = $"Erreur: {ex.Message}";
         }
     }

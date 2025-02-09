@@ -24,6 +24,6 @@ namespace MyContact.Models
 
         [JsonPropertyName("serviceNom")]
         public string? ServiceNom { get; set; }
-
+        public int SiteId { get; internal set; }
     }
 }
