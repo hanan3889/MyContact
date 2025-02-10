@@ -1,0 +1,24 @@
+﻿<controls:MetroWindow x:Class="MyContact.View.LoginWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      Title="Connexion Admin" Height="250" Width="400">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Entrez votre mot de passe :" Grid.Row="0" FontSize="16" Margin="10"/>
+
+        <PasswordBox x:Name="PasswordInput"
+                     Grid.Row="1" Width="250" Height="30"
+                     Margin="10" HorizontalAlignment="Center"/>
+
+        <Button Content="Se Connecter"
+                Grid.Row="2" Width="150" Height="40" Margin="10"
+                Command="{Binding LoginCommand}" />
+    </Grid>
+</controls:MetroWindow>

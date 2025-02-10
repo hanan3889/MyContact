@@ -4,6 +4,7 @@ using MyContact.Views;
 using MyContact.ViewModels;
 using MyContact.Commands;
 using MahApps.Metro.Controls;
+using MyContact.View;
 
 namespace MyContact
 {
@@ -12,6 +13,7 @@ namespace MyContact
         public ICommand OpenSearchSalaryViewCommand { get; }
         public ICommand OpenSearchSalaryByCityViewCommand { get; }
         public ICommand OpenSearchSalaryByServiceViewCommand { get; }
+        public ICommand OpenLoginCommand { get; }
 
         public MainWindow()
         {
@@ -21,8 +23,15 @@ namespace MyContact
             OpenSearchSalaryViewCommand = new RelayCommand(OpenSearchSalaryView);
             OpenSearchSalaryByCityViewCommand = new RelayCommand(OpenSearchSalaryByCityView);
             OpenSearchSalaryByServiceViewCommand = new RelayCommand(OpenSearchSalaryByServiceView);
+            OpenLoginCommand = new RelayCommand(OpenLogin);
 
             this.DataContext = this;
+        }
+
+        private void OpenLogin(object? obj)
+        {
+            var loginWindow = new LoginWindow();
+            loginWindow.Show();
         }
 
         private void OpenSearchSalaryView(object parameter)
