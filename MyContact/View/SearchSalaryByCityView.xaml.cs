@@ -1,5 +1,5 @@
-﻿using MyContact.ViewModels;
-using System.Windows;
+﻿using System.Windows;
+using MyContact.ViewModels;
 
 namespace MyContact.Views
 {

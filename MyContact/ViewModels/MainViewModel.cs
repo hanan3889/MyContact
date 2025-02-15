@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
-using MyContact.Commands;
 
 namespace MyContact.ViewModels
 {
@@ -12,6 +12,11 @@ namespace MyContact.ViewModels
         public ObservableCollection<Salaries> Salaries { get; set; }
 
         public ICommand LoadSalariesCommand { get; }
+        public Commands.RelayCommand OpenSearchSalaryViewCommand { get; internal set; }
+        public Commands.RelayCommand OpenSearchSalaryByCityViewCommand { get; internal set; }
+        public RelayCommand OpenSearchSalaryByServiceViewCommand { get; internal set; }
+        public RelayCommand OpenRegisterCommand { get; internal set; }
+        public RelayCommand OpenLoginCommand { get; internal set; }
 
         public MainViewModel()
         {

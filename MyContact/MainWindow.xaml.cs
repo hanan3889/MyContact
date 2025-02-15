@@ -1,10 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using MyContact.Views;
-using MyContact.ViewModels;
-using MyContact.Commands;
+﻿using System.Windows.Input;
 using MahApps.Metro.Controls;
+using MyContact.Commands;
 using MyContact.View;
+using MyContact.ViewModels;
+using MyContact.Views;
 
 namespace MyContact
 {
@@ -14,24 +13,31 @@ namespace MyContact
         public ICommand OpenSearchSalaryByCityViewCommand { get; }
         public ICommand OpenSearchSalaryByServiceViewCommand { get; }
         public ICommand OpenLoginCommand { get; }
+        public ICommand OpenRegisterCommand { get; }
 
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
-
-            OpenSearchSalaryViewCommand = new RelayCommand(OpenSearchSalaryView);
-            OpenSearchSalaryByCityViewCommand = new RelayCommand(OpenSearchSalaryByCityView);
-            OpenSearchSalaryByServiceViewCommand = new RelayCommand(OpenSearchSalaryByServiceView);
-            OpenLoginCommand = new RelayCommand(OpenLogin);
-
-            this.DataContext = this;
+            DataContext = new MainViewModel
+            {
+                OpenSearchSalaryViewCommand = new RelayCommand(OpenSearchSalaryView),
+                OpenSearchSalaryByCityViewCommand = new RelayCommand(OpenSearchSalaryByCityView),
+                OpenSearchSalaryByServiceViewCommand = new RelayCommand(OpenSearchSalaryByServiceView),
+                OpenLoginCommand = new RelayCommand(OpenLogin),
+                OpenRegisterCommand = new RelayCommand(OpenRegister)
+            };
         }
 
         private void OpenLogin(object? obj)
         {
             var loginWindow = new LoginWindow();
             loginWindow.Show();
+        }
+
+        private void OpenRegister(object? obj)
+        {
+            var registerWindow = new RegisterWindow();
+            registerWindow.Show();
         }
 
         private void OpenSearchSalaryView(object parameter)

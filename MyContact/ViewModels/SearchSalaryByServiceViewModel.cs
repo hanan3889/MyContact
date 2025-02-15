@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
-using MyContact.Commands;
 
 namespace MyContact.ViewModels
 {

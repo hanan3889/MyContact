@@ -17,7 +17,7 @@ namespace MyContact.ViewModels
 
         private void Login(object parameter)
         {
-            string correctPassword = "admin123"; 
+            string correctPassword = "admin123";
             if (((PasswordBox)parameter).Password == correctPassword)
             {
                 MessageBox.Show("Connexion réussie !");

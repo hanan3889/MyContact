@@ -1,9 +1,9 @@
 ﻿<Application x:Class="MyContact.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MyContact"
+             xmlns:conv="clr-namespace:MyContact.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <conv:PasswordsMultiConverter x:Key="PasswordsMultiConverter"/>
     </Application.Resources>
 </Application>

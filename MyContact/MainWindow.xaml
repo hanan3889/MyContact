@@ -4,11 +4,11 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:MyContact"
-                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
-                      xmlns:viewmodels="clr-namespace:MyContact.ViewModels" 
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:viewmodels="clr-namespace:MyContact.ViewModels"
                       d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
                       mc:Ignorable="d"
-                      Title="MainWindow" Height="450" Width="800">
+                      Title="Accueil" Height="450" Width="800">
 
     <Window.Resources>
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
@@ -68,7 +68,7 @@
                         Style="{StaticResource RoundedButtonStyle}" />
             </StackPanel>
 
-            <!-- Bouton Connexion à droite -->
+            <!-- Boutons Connexion et Enregistrement à droite -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button Content="Connexion Admin"
                         Width="150"
@@ -76,6 +76,14 @@
                         Margin="10"
                         Padding="0"
                         Command="{Binding OpenLoginCommand}"
+                        Style="{StaticResource RoundedButtonStyle}"/>
+
+                <Button Content="S'enregistrer"
+                        Width="150"
+                        Height="30"
+                        Margin="10"
+                        Padding="0"
+                        Command="{Binding OpenRegisterCommand}"
                         Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
         </DockPanel>

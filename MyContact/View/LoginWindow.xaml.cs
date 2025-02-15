@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
+using MyContact.ViewModels;
 
 namespace MyContact.View
 {
@@ -8,6 +8,7 @@ namespace MyContact.View
         public LoginWindow()
         {
             InitializeComponent();
+            DataContext = new LoginViewModel();
         }
     }
 }

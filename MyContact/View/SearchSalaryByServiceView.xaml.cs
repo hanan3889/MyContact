@@ -1,5 +1,5 @@
-﻿using MyContact.ViewModels;
-using System.Windows;
+﻿using System.Windows;
+using MyContact.ViewModels;
 
 namespace MyContact.Views
 {
@@ -11,7 +11,7 @@ namespace MyContact.Views
         public SearchSalaryByServiceView()
         {
             InitializeComponent();
-            DataContext = new SearchSalaryByServiceViewModel(); 
+            DataContext = new SearchSalaryByServiceViewModel();
         }
     }
 }
