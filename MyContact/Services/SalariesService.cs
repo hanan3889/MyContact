@@ -50,9 +50,31 @@ namespace MyContact.Services
             }
         }
 
-        internal IEnumerable<Salaries> GetAllSalaries()
+        public async Task CreateSalaryAsync(Salaries salary)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(salary), System.Text.Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("create", content);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur lors de la création du salarié.", ex);
+            }
+        }
+
+        public async Task DeleteSalaryAsync(int id)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"delete/{id}");
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur lors de la suppression du salarié.", ex);
+            }
         }
     }
 }

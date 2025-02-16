@@ -6,7 +6,44 @@
         xmlns:local="clr-namespace:MyContact.View"
         mc:Ignorable="d"
         Title="AdminWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <!-- Sidebar -->
+        <Border Background="#339c33" Width="200">
+            <StackPanel>
+                <TextBlock Text="Bloc Alimentations" Foreground="White" FontSize="18" Margin="10"/>
+                <Button Content="Tableau de bord" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
+                <Button Content="Salariés" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16" Click="SalariesButton_Click"/>
+                <Button Content="Services" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
+                <Button Content="Sites" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Margin="10">
+            <StackPanel>
+                <Button Content="Ajouter un salarié" Background="#339c33" Foreground="White" FontSize="16" Margin="10" HorizontalAlignment="Left" Click="AddSalaryButton_Click"/>
+                <DataGrid x:Name="SalariesDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Width="Auto" ItemsSource="{Binding Salaries}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
+                        <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}"/>
+                        <DataGridTextColumn Header="Téléphone Fixe" Binding="{Binding TelephoneFixe}"/>
+                        <DataGridTextColumn Header="Téléphone Portable" Binding="{Binding TelephonePortable}"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                        <DataGridTextColumn Header="Site Ville" Binding="{Binding SiteVille}"/>
+                        <DataGridTextColumn Header="Service Nom" Binding="{Binding ServiceNom}"/>
+                        <DataGridTemplateColumn Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="Edit" Margin="2" Click="EditSalaryButton_Click"/>
+                                        <Button Content="Delete" Margin="2" Click="DeleteSalaryButton_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>

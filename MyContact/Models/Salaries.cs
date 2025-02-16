@@ -4,6 +4,9 @@ namespace MyContact.Models
 {
     public class Salaries
     {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
         [JsonPropertyName("nom")]
         public required string Nom { get; set; }
 
@@ -24,6 +27,11 @@ namespace MyContact.Models
 
         [JsonPropertyName("serviceNom")]
         public string? ServiceNom { get; set; }
-        public int SiteId { get; internal set; }
+
+        [JsonPropertyName("siteId")]
+        public int SiteId { get; set; }
+
+        [JsonPropertyName("serviceId")]
+        public int ServiceId { get; set; }
     }
 }
