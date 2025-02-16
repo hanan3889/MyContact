@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow x:Class="MyContact.View.LoginWindow"
+﻿<Window x:Class="MyContact.View.LoginWindow"
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
@@ -38,4 +38,4 @@
             </StackPanel>
         </Border>
     </Grid>
-</controls:MetroWindow>
+</Window>

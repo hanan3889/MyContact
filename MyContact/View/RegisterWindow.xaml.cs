@@ -9,7 +9,9 @@ namespace MyContact.View
         public RegisterWindow()
         {
             InitializeComponent();
-            DataContext = new RegisterViewModel();
+            var viewModel = new RegisterViewModel();
+            viewModel.CurrentWindow = this;  
+            DataContext = viewModel;
         }
 
         private void PasswordInput_Checked(object sender, RoutedEventArgs e)

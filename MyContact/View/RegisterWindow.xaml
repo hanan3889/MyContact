@@ -47,19 +47,21 @@
 
                 <!-- Bouton d'inscription -->
                 <Button Content="S'enregistrer"
-                        Width="150" Height="40"
-                        HorizontalAlignment="Center"
-                        Background="#339c33" Foreground="White"
-                        FontWeight="Bold"
-                        BorderBrush="#339c33" BorderThickness="1"
-                        Command="{Binding RegisterCommand}">
+        Width="150" Height="40"
+        HorizontalAlignment="Center"
+        Background="#339c33" Foreground="White"
+        FontWeight="Bold"
+        BorderBrush="#339c33" BorderThickness="1"
+        Command="{Binding RegisterCommand}">
                     <Button.CommandParameter>
                         <MultiBinding Converter="{StaticResource PasswordsMultiConverter}">
                             <Binding ElementName="PasswordInput" />
                             <Binding ElementName="ConfirmPasswordInput" />
+                            
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>
+
 
             </StackPanel>
         </Border>
