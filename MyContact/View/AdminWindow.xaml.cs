@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MyContact.Models;
@@ -37,7 +38,6 @@ namespace MyContact.View
 
         private async void AddSalaryButton_Click(object sender, RoutedEventArgs e)
         {
-            
             var newSalary = new Salaries
             {
                 Nom = "Nouveau Nom",
@@ -47,21 +47,31 @@ namespace MyContact.View
                 Email = "nouveau@example.com",
                 SiteVille = "Nouvelle Ville",
                 ServiceNom = "Nouveau Service",
-                SiteId = 1, 
-                ServiceId = 1 
+                SiteId = 1,
+                ServiceId = 1
             };
 
-           
             await _salariesService.CreateSalaryAsync(newSalary);
             await LoadSalaries();
         }
 
-        private void EditSalaryButton_Click(object sender, RoutedEventArgs e)
+        private async void EditSalaryButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Salaries salary)
             {
-                // Mettre à jour le salarié
-                MessageBox.Show($"Modifié le salarié : {salary.Nom} {salary.Prenom}");
+                
+                salary.Prenom = "Modifié";
+
+                bool success = await _salariesService.UpdateSalaryAsync(salary);
+                if (success)
+                {
+                    MessageBox.Show("Salarié mis à jour !");
+                    await LoadSalaries();
+                }
+                else
+                {
+                    MessageBox.Show("Erreur lors de la mise à jour.");
+                }
             }
         }
 
@@ -69,9 +79,20 @@ namespace MyContact.View
         {
             if (sender is Button button && button.DataContext is Salaries salary)
             {
-                // Supprimer le salarié
-                await _salariesService.DeleteSalaryAsync(salary.Id);
-                await LoadSalaries();
+                var result = MessageBox.Show($"Voulez-vous vraiment supprimer {salary.Nom} ?", "Confirmation", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool success = await _salariesService.DeleteSalaryAsync(salary.Id);
+                    if (success)
+                    {
+                        MessageBox.Show("Salarié supprimé !");
+                        await LoadSalaries();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erreur lors de la suppression.");
+                    }
+                }
             }
         }
     }
