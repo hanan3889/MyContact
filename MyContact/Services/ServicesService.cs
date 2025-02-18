@@ -17,7 +17,7 @@ namespace MyContact.Services
         {
             try
             {
-                var url = $"http://localhost:5110/api/Services/get/salaries/{serviceName}";
+                var url = $"http://localhost:5110/api/Services/get/name/{serviceName}";
                 var response = await _httpClient.GetAsync(url);
                 var content = await response.Content.ReadAsStringAsync();
 
