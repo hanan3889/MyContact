@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 using MyContact.Models;
 
 namespace MyContact.Services
@@ -35,7 +32,7 @@ namespace MyContact.Services
             }
             catch (Exception ex)
             {
-                
+
                 return new List<Salaries>();
             }
         }

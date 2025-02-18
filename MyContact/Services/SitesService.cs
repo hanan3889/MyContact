@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 using MyContact.Models;
 
 namespace MyContact.Services
@@ -17,8 +13,8 @@ namespace MyContact.Services
             _httpClient = new HttpClient();
         }
 
-       
-       
+
+
         public async Task<List<Salaries>> GetSalariesByCityAsync(string ville)
         {
             try
@@ -27,7 +23,7 @@ namespace MyContact.Services
                 var response = await _httpClient.GetAsync(url);
                 var content = await response.Content.ReadAsStringAsync();
 
-               
+
                 if (!response.IsSuccessStatusCode)
                 {
                     return new List<Salaries>();

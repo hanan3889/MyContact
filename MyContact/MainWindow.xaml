@@ -4,13 +4,13 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:MyContact"
-                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
-                      xmlns:viewmodels="clr-namespace:MyContact.ViewModels" 
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:viewmodels="clr-namespace:MyContact.ViewModels"
                       d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
                       mc:Ignorable="d"
-                      Title="MainWindow" Height="450" Width="800">
+                      Title="Accueil" Height="450" Width="800">
+
     <Window.Resources>
-        <!-- Style for buttons -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#339c33"/>
             <Setter Property="Foreground" Value="White"/>
@@ -41,41 +41,55 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0">
+            <!-- Boutons de recherche à gauche -->
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                <Button Content="Rechercher un salarié"
+                        Width="150"
+                        Height="30"
+                        Margin="10"
+                        Command="{Binding OpenSearchSalaryViewCommand}"
+                        Style="{StaticResource RoundedButtonStyle}" />
 
-            <Button Content="Rechercher un salarié"
-                    Width="150"
-                    Height="30"
-                    Margin="10"
-                    Padding="0"
-                    Command="{Binding OpenSearchSalaryViewCommand}"
-                    Style="{StaticResource RoundedButtonStyle}" />
+                <Button Content="Par service"
+                        Width="150"
+                        Height="30"
+                        Margin="10"
+                        Padding="0"
+                        Command="{Binding OpenSearchSalaryByServiceViewCommand}"
+                        Style="{StaticResource RoundedButtonStyle}" />
 
-            <Button Content="Par service"
-                    Width="150"
-                    Height="30"
-                    Margin="10"
-                    Padding="0"
-                    Command="{Binding OpenSearchSalaryByServiceViewCommand}"
-                    Style="{StaticResource RoundedButtonStyle}" Grid.Column="1" />
+                <Button Content="Par site"
+                        Width="150"
+                        Height="30"
+                        Margin="10"
+                        Padding="0"
+                        Command="{Binding OpenSearchSalaryByCityViewCommand}"
+                        Style="{StaticResource RoundedButtonStyle}" />
+            </StackPanel>
 
-            <Button Content="Par site"
-                    Width="150"
-                    Height="30"
-                    Margin="10"
-                    Padding="0"
-                    Command="{Binding OpenSearchSalaryByCityViewCommand}"
-                    Style="{StaticResource RoundedButtonStyle}" Grid.Column="2" />
-        </Grid>
+            <!-- Boutons Connexion et Enregistrement à droite -->
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Content="Connexion Admin"
+                        Width="150"
+                        Height="30"
+                        Margin="10"
+                        Padding="0"
+                        Command="{Binding OpenLoginCommand}"
+                        Style="{StaticResource RoundedButtonStyle}"/>
+
+                <Button Content="S'enregistrer"
+                        Width="150"
+                        Height="30"
+                        Margin="10"
+                        Padding="0"
+                        Command="{Binding OpenRegisterCommand}"
+                        Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
+        </DockPanel>
 
         <DataGrid x:Name="ContactsDataGrid"
                   Grid.Row="1"
-                  Grid.ColumnSpan="2"
                   AutoGenerateColumns="False"
                   Margin="10"
                   ItemsSource="{Binding Salaries}">
@@ -89,14 +103,5 @@
                 <DataGridTextColumn Header="Service" Binding="{Binding ServiceNom}" />
             </DataGrid.Columns>
         </DataGrid>
-
-        <Image Source="/Images/blocalimentation-logo.png"
-               Grid.Row="2"
-               Grid.ColumnSpan="2"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Top"
-               Width="300"
-               Height="300"
-               Margin="0,10,0,0"/>
     </Grid>
 </controls:MetroWindow>
