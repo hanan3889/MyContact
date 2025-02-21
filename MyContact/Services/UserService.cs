@@ -1,5 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text;
+using System.Windows;
+using MyContact.Models;
 using Newtonsoft.Json;
 
 namespace MyContact.Services
@@ -26,14 +28,22 @@ namespace MyContact.Services
         }
 
 
-        public async Task<bool> AuthenticateUser(string email, string password)
+        public async Task<Users?> AuthenticateUser(string email, string password)
         {
-            var user = new { Email = email, Password = password };
-            var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+            var userCredentials = new { Email = email, Password = password };
+            var content = new StringContent(JsonConvert.SerializeObject(userCredentials), Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _httpClient.PostAsync("/api/Users/login", content);
 
-            return response.IsSuccessStatusCode;
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                MessageBox.Show($"Erreur API : {response.StatusCode} - {errorContent}", "Erreur Authentification");
+                return null;
+            }
+
+            string json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Users>(json);
         }
     }
 }

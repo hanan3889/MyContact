@@ -33,7 +33,7 @@
                         FontWeight="Bold"
                         BorderBrush="#339c33" BorderThickness="1"
                         Command="{Binding LoginCommand}"
-                        CommandParameter="{Binding ElementName=PasswordInput, Path=Password}"
+                        CommandParameter="{Binding ElementName=PasswordInput}"
                          />
             </StackPanel>
         </Border>
