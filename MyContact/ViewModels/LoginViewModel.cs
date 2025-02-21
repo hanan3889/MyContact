@@ -1,32 +1,71 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MyContact.Commands;
+using MyContact.Services;
 using MyContact.View;
 
 namespace MyContact.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
+        private readonly UsersService _usersService;
+        private string _email;
+
         public ICommand LoginCommand { get; }
 
         public LoginViewModel()
         {
-            LoginCommand = new RelayCommand(Login);
+            _usersService = new UsersService("http://localhost:5110"); 
+            LoginCommand = new RelayCommand(async (parameter) => await Login(parameter));
         }
 
-        private void Login(object parameter)
+        public string Email
         {
-            string correctPassword = "admin123";
-            if (((PasswordBox)parameter).Password == correctPassword)
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private async Task Login(object parameter)
+        {
+            if (parameter is not PasswordBox passwordBox)
+            {
+                MessageBox.Show("Erreur lors de la récupération du mot de passe.");
+                return;
+            }
+
+            string password = passwordBox.Password;
+
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Veuillez entrer un email et un mot de passe.");
+                return;
+            }
+
+            var user = await _usersService.AuthenticateUser(Email, password);
+
+            if (user == null)
+            {
+                MessageBox.Show("Email ou mot de passe incorrect.");
+                return;
+            }
+
+
+            // 🔹 Vérifie si l'utilisateur est admin
+            if (user.Roles == 0) // 0 = Admin
             {
                 MessageBox.Show("Connexion réussie !");
                 new AdminWindow().Show();
-                Application.Current.Windows[1]?.Close();
+                Application.Current.Windows[0]?.Close();
             }
             else
             {
-                MessageBox.Show("Mot de passe incorrect.");
+                MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
             }
         }
     }
