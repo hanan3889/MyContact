@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +18,7 @@ namespace MyContact.ViewModels
 
         public LoginViewModel()
         {
-            _usersService = new UsersService("http://localhost:5110"); 
+            _usersService = new UsersService("http://localhost:5110");
             LoginCommand = new RelayCommand(async (parameter) => await Login(parameter));
         }
 
@@ -55,18 +56,26 @@ namespace MyContact.ViewModels
                 return;
             }
 
-
-            // 🔹 Vérifie si l'utilisateur est admin
+            //Vérifie si l'utilisateur est admin
             if (user.Roles == 0) // 0 = Admin
             {
                 MessageBox.Show("Connexion réussie !");
-                new AdminWindow().Show();
-                Application.Current.Windows[0]?.Close();
+
+                AdminWindow adminWindow = new AdminWindow();
+                adminWindow.Show();
+                CloseLoginWindow();
             }
             else
             {
                 MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
             }
+        }
+
+        private void CloseLoginWindow()
+        {
+            // 🔹 Trouve et ferme la fenêtre de connexion
+            var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginWindow);
+            loginWindow?.Close();
         }
     }
 }
