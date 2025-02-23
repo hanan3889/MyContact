@@ -10,7 +10,7 @@ namespace MyContact.View
         {
             InitializeComponent();
             var viewModel = new RegisterViewModel();
-            viewModel.CurrentWindow = this;  
+            viewModel.CurrentWindow = this;
             DataContext = viewModel;
         }
 

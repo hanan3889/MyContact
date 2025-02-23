@@ -31,7 +31,7 @@ namespace MyContact.ViewModels
 
         private async void Register(object parameter)
         {
-            
+
 
             if (string.IsNullOrWhiteSpace(Email))
             {
@@ -82,14 +82,14 @@ namespace MyContact.ViewModels
             }
         }
 
-        
+
         private void OpenAdminWindow()
         {
             if (CurrentWindow != null)
             {
                 AdminWindow adminWindow = new AdminWindow();
                 adminWindow.Show();
-                CurrentWindow.Close();  
+                CurrentWindow.Close();
             }
             else
             {

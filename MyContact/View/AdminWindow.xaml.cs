@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MyContact.Models;
@@ -59,21 +58,16 @@ namespace MyContact.View
         {
             if (sender is Button button && button.DataContext is Salaries salary)
             {
-                
-                salary.Prenom = "Modifié";
+                EditSalaryWindow editWindow = new EditSalaryWindow(salary);
+                bool? result = editWindow.ShowDialog();
 
-                bool success = await _salariesService.UpdateSalaryAsync(salary);
-                if (success)
+                if (result == true)
                 {
-                    MessageBox.Show("Salarié mis à jour !");
                     await LoadSalaries();
-                }
-                else
-                {
-                    MessageBox.Show("Erreur lors de la mise à jour.");
                 }
             }
         }
+
 
         private async void DeleteSalaryButton_Click(object sender, RoutedEventArgs e)
         {
