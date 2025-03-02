@@ -1,28 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
+using MyContact.ViewModels;
+using MyContact.Models;
+using MahApps.Metro.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using MyContact.Commands;
+using MyContact.View;
+
+
 
 namespace MyContact.View
 {
-    /// <summary>
-    /// Logique d'interaction pour SitesWindow.xaml
-    /// </summary>
-    public partial class SitesWindow : Page
+    public partial class SitesWindow : MetroWindow
     {
+        private readonly SitesViewModel _viewModel;
+
+        public SitesViewModel DataContext { get; }
+
         public SitesWindow()
         {
             InitializeComponent();
+            _viewModel = new SitesViewModel();
+            DataContext = _viewModel;
+        }
+
+        //Ouvrir la fenêtre d'ajout d'un site
+        private void AddSiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addWindow = new AddEditSiteWindow();
+            bool? result = addWindow.ShowDialog();
+
+            if (result == true)
+            {
+                var newSite = addWindow.Site;
+                _viewModel.AddSiteCommand.Execute(newSite);
+            }
+        }
+
+        //Modifier un site sélectionné
+        private void EditSiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SitesDataGrid.SelectedItem is Sites selectedSite)
+            {
+                var editWindow = new AddEditSiteWindow(selectedSite);
+                bool? result = editWindow.ShowDialog();
+
+                if (result == true)
+                {
+                    var updatedSite = editWindow.Site;
+                    _viewModel.EditSiteCommand.Execute(updatedSite);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner un site à modifier.");
+            }
+        }
+
+        //Supprimer un site sélectionné
+        private void DeleteSiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SitesDataGrid.SelectedItem is Sites selectedSite)
+            {
+                var result = MessageBox.Show($"Voulez-vous vraiment supprimer {selectedSite.Ville} ?",
+                                             "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    _viewModel.DeleteSiteCommand.Execute(selectedSite);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Veuillez sélectionner un site à supprimer.");
+            }
         }
     }
 }

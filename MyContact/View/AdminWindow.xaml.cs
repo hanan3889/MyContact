@@ -89,5 +89,20 @@ namespace MyContact.View
                 }
             }
         }
+
+        private void SitesButton_Click(object sender, RoutedEventArgs e)
+        {
+            SitesWindow sitesWindow = new SitesWindow();
+            sitesWindow.Show();
+        }
+
+        private void ServicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            AddEditServiceWindow addEditServiceWindow = new AddEditServiceWindow();
+            addEditServiceWindow.ShowDialog();
+        }
+
+
     }
 }

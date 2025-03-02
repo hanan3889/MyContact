@@ -13,8 +13,10 @@
                 <TextBlock Text="Bloc Alimentations" Foreground="White" FontSize="18" Margin="10"/>
                 <Button Content="Tableau de bord" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
                 <Button Content="Salariés" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16" Click="SalariesButton_Click"/>
-                <Button Content="Services" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
-                <Button Content="Sites" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16"/>
+                <Button Content="Services" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16" Click="ServicesButton_Click"/>
+                <Button Content="Sites" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16" Click="SitesButton_Click"/>
+                
+
             </StackPanel>
         </Border>
 
