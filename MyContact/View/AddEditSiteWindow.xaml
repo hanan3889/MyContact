@@ -1,0 +1,58 @@
+﻿<controls:MetroWindow x:Class="MyContact.View.AddEditSiteWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      mc:Ignorable="d"
+                      Title="Ajouter/Modifier un Site"
+                      Height="500" Width="600"
+                      WindowStartupLocation="CenterScreen"
+                      GlowBrush="{DynamicResource AccentColorBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Formulaire -->
+            <RowDefinition Height="*"/>
+            <!-- Liste des Salariés -->
+            <RowDefinition Height="Auto"/>
+            <!-- Boutons -->
+        </Grid.RowDefinitions>
+
+        <!-- 🔹 Formulaire d'édition du site -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Nom du Site:" FontSize="16" FontWeight="Bold"/>
+            <TextBox Text="{Binding Site.Ville, UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="0,5,0,10" Height="30"/>
+        </StackPanel>
+
+        <!-- 🔹 Liste des salariés du site -->
+        <DataGrid x:Name="SalariesDataGrid"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="Column"
+                  ItemsSource="{Binding Salaries}"
+                  Margin="0,10,0,10"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
+                <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*"/>
+                <DataGridTextColumn Header="Téléphone" Binding="{Binding TelephonePortable}" Width="*"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- 🔹 Boutons d'action -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Annuler"
+                             Width="100"
+                             Margin="5"
+                             Click="Cancel_Click"/>
+            <Button Content="Enregistrer"
+                             Width="120"
+                             Margin="5"
+                             Click="Save_Click"/>
+        </StackPanel>
+    </Grid>
+</controls:MetroWindow>

@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
+using System.Windows;
 using MyContact.Models;
 
 namespace MyContact.Services
@@ -36,5 +37,47 @@ namespace MyContact.Services
                 return new List<Salaries>();
             }
         }
+
+        // Récupérer tous les services
+        public async Task<List<ServicesModel>> GetAllServicesAsync()
+        {
+            try
+            {
+                var url = "https://localhost:7140/api/Services";
+                var response = await _httpClient.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
+                    return new List<ServicesModel>();
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+               
+                var services = JsonSerializer.Deserialize<List<ServicesModel>>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (services == null)
+                {
+                    
+                    return new List<ServicesModel>();
+                }
+
+                return services;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Exception : {ex.Message}", "Erreur");
+                return new List<ServicesModel>();
+            }
+        }
+
+
+
+
+
+
     }
 }

@@ -31,7 +31,7 @@ namespace MyContact.ViewModels
 
         private async void Register(object parameter)
         {
-            
+
 
             if (string.IsNullOrWhiteSpace(Email))
             {
@@ -58,17 +58,17 @@ namespace MyContact.ViewModels
 
                 try
                 {
-                    Console.WriteLine($"🔍 Tentative d'enregistrement de {Email}...");
+                    Console.WriteLine($"Tentative d'enregistrement de {Email}...");
                     bool isRegistered = await _usersService.RegisterUser(Email, password);
 
                     if (isRegistered)
                     {
-                        MessageBox.Show("✅ Enregistrement réussi !");
+                        MessageBox.Show("Enregistrement réussi !");
                         OpenAdminWindow();
                     }
                     else
                     {
-                        MessageBox.Show("❌ Erreur lors de l'enregistrement.");
+                        MessageBox.Show("Erreur lors de l'enregistrement.");
                     }
                 }
                 catch (Exception ex)
@@ -82,14 +82,14 @@ namespace MyContact.ViewModels
             }
         }
 
-        
+
         private void OpenAdminWindow()
         {
             if (CurrentWindow != null)
             {
                 AdminWindow adminWindow = new AdminWindow();
                 adminWindow.Show();
-                CurrentWindow.Close();  
+                CurrentWindow.Close();
             }
             else
             {

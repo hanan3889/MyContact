@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,13 +56,15 @@ namespace MyContact.ViewModels
                 return;
             }
 
-            //Vérifie si l'utilisateur est admin
+            // Vérifie si l'utilisateur est admin
             if (user.Roles == 0) // 0 = Admin
             {
                 MessageBox.Show("Connexion réussie !");
 
+                // Ouvrir AdminWindow
                 AdminWindow adminWindow = new AdminWindow();
                 adminWindow.Show();
+
                 CloseLoginWindow();
             }
             else
