@@ -1,0 +1,18 @@
+﻿<Window x:Class="MyContact.View.AddServiceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ajouter / Modifier un Service"
+        Height="200" Width="400" WindowStartupLocation="CenterOwner">
+
+    <Grid Margin="10">
+        <StackPanel>
+            <TextBlock Text="Nom du Service :" FontSize="14"/>
+            <TextBox x:Name="ServiceNameTextBox" Margin="0,5,0,10"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Annuler" Width="80" Margin="5" Click="Cancel_Click"/>
+                <Button x:Name="ConfirmButton" Width="80" Margin="5" Click="Confirm_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
