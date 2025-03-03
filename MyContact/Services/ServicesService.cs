@@ -2,6 +2,8 @@
 using System.Text.Json;
 using System.Windows;
 using MyContact.Models;
+using System.Threading.Tasks;
+using System.Net.Http.Json;
 
 namespace MyContact.Services
 {
@@ -33,7 +35,6 @@ namespace MyContact.Services
             }
             catch (Exception ex)
             {
-
                 return new List<Salaries>();
             }
         }
@@ -53,7 +54,7 @@ namespace MyContact.Services
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
-               
+
                 var services = JsonSerializer.Deserialize<List<ServicesModel>>(content, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
@@ -61,7 +62,6 @@ namespace MyContact.Services
 
                 if (services == null)
                 {
-                    
                     return new List<ServicesModel>();
                 }
 
@@ -69,15 +69,84 @@ namespace MyContact.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"❌ Exception : {ex.Message}", "Erreur");
+                MessageBox.Show($"Exception : {ex.Message}", "Erreur");
                 return new List<ServicesModel>();
             }
         }
 
+        // Ajouter un nouveau service
+        public async Task<bool> AddServiceAsync(ServicesModel newService)
+        {
+            try
+            {
+                var url = "https://localhost:7140/api/Services";
+                var response = await _httpClient.PostAsJsonAsync(url, newService);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception : {ex.Message}", "Erreur");
+                return false;
+            }
+        }
 
+        // Supprimer un service
+        public async Task<bool> DeleteServiceAsync(int serviceId)
+        {
+            try
+            {
+                var url = $"https://localhost:7140/api/Services/{serviceId}";
+                var response = await _httpClient.DeleteAsync(url);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception : {ex.Message}", "Erreur");
+                return false;
+            }
+        }
 
+        // Mettre à jour un service
+        public async Task<bool> UpdateServiceAsync(ServicesModel updatedService)
+        {
+            try
+            {
+                var url = $"https://localhost:7140/api/Services/{updatedService.Id}";
+                var response = await _httpClient.PutAsJsonAsync(url, updatedService);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception : {ex.Message}", "Erreur");
+                return false;
+            }
+        }
     }
 }

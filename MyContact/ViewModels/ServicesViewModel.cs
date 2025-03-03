@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using MyContact.Commands;
+﻿using MyContact.Commands;
 using MyContact.Models;
+using MyContact.Services;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using System.Windows;
+using System.Threading.Tasks;
+using MyContact.View;
 using MyContact.ViewModels;
+using System.Xml.Linq;
 
 public class ServicesViewModel : ViewModelBase
 {
-    private readonly HttpClient _httpClient;
-    private const string BaseUrl = "https://localhost:7140/api/Services";
+    private readonly ServicesService _servicesService;
+    private ObservableCollection<ServicesModel> _services;
 
-    private ObservableCollection<Services> _services;
-    public ObservableCollection<Services> Services
+    public ObservableCollection<ServicesModel> Services
     {
         get => _services;
         set
@@ -25,38 +24,62 @@ public class ServicesViewModel : ViewModelBase
         }
     }
 
-    private Services _selectedService;
-    public Services SelectedService
-    {
-        get => _selectedService;
-        set
-        {
-            _selectedService = value;
-            OnPropertyChanged();
-        }
-    }
-
+    public ICommand AddServiceCommand { get; }
     public ICommand EditServiceCommand { get; }
     public ICommand DeleteServiceCommand { get; }
+    public string Nom { get; internal set; }
 
     public ServicesViewModel()
     {
-        _httpClient = new HttpClient();
-        _services = new ObservableCollection<Services>();
+        _servicesService = new ServicesService();
+        _services = new ObservableCollection<ServicesModel>();
         LoadServices();
 
-        EditServiceCommand = new RelayCommand(async (param) => await UpdateService(param as Services));
-        DeleteServiceCommand = new RelayCommand(async (param) => await DeleteService(param as Services));
+        AddServiceCommand = new RelayCommand(async (_) => await AddService());
+        EditServiceCommand = new RelayCommand(async (param) => await UpdateService(param as ServicesModel));
+        DeleteServiceCommand = new RelayCommand(async (param) => await DeleteService(param as ServicesModel));
+    }
+
+    private async Task DeleteService(ServicesModel? service)
+    {
+        if (service == null)
+        {
+            MessageBox.Show("Service non trouvé.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
+        var result = await _servicesService.DeleteServiceAsync(service.Id);
+        if (result)
+        {
+            Services.Remove(service);
+            MessageBox.Show("Service supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        else
+        {
+            MessageBox.Show("Erreur lors de la suppression du service.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async Task UpdateService(ServicesModel? service)
+    {
+        if (service == null)
+        {
+            MessageBox.Show("Service non trouvé.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
+        // Si l'utilisateur a modifié le service, recharger les services
+        LoadServices();
     }
 
     private async void LoadServices()
     {
         try
         {
-            var services = await _httpClient.GetFromJsonAsync<ObservableCollection<Services>>(BaseUrl);
+            var services = await _servicesService.GetAllServicesAsync();
             if (services != null)
             {
-                Services = services;
+                Services = new ObservableCollection<ServicesModel>(services);
             }
         }
         catch (Exception ex)
@@ -65,63 +88,13 @@ public class ServicesViewModel : ViewModelBase
         }
     }
 
-    private async Task UpdateService(Services service)
+    private async Task AddService()
     {
-        if (service == null)
-        {
-            MessageBox.Show("Veuillez sélectionner un service à modifier.", "Alerte", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
+        // Ouvrir la fenêtre AddServiceWindow
+        AddServiceWindow addServiceWindow = new AddServiceWindow();
+        addServiceWindow.ShowDialog();
 
-        try
-        {
-            var response = await _httpClient.PutAsJsonAsync($"{BaseUrl}/{service.Id}", service);
-
-            if (response.IsSuccessStatusCode)
-            {
-                MessageBox.Show("Service mis à jour avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadServices(); // Rafraîchir la liste
-            }
-            else
-            {
-                MessageBox.Show("Erreur lors de la mise à jour du service.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Exception : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private async Task DeleteService(Services service)
-    {
-        if (service == null)
-        {
-            MessageBox.Show("Veuillez sélectionner un service à supprimer.", "Alerte", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
-
-        var result = MessageBox.Show($"Voulez-vous vraiment supprimer le service \"{service.Nom}\" ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-        if (result != MessageBoxResult.Yes)
-            return;
-
-        try
-        {
-            var response = await _httpClient.DeleteAsync($"{BaseUrl}/{service.Id}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                Services.Remove(service);
-                MessageBox.Show("Service supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("Erreur lors de la suppression du service.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Exception : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        // Si l'utilisateur a ajouté un service, recharger les services
+        LoadServices();
     }
 }
