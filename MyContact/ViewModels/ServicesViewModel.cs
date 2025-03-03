@@ -48,6 +48,10 @@ public class ServicesViewModel : ViewModelBase
             return;
         }
 
+        MessageBox.Show(
+        $"Êtes-vous sûr de vouloir supprimer le service '{service.Nom}' ?",
+        "Confirmation de suppression", MessageBoxButton.OK, MessageBoxImage.Warning);
+
         var result = await _servicesService.DeleteServiceAsync(service.Id);
         if (result)
         {
