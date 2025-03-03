@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
-//using MahApps.Metro.Controls;
-using MyContact.ViewModels;
+
 
 namespace MyContact.View
 {

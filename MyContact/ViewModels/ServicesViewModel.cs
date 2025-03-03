@@ -72,8 +72,15 @@ public class ServicesViewModel : ViewModelBase
             return;
         }
 
-        // Si l'utilisateur a modifié le service, recharger les services
-        LoadServices();
+        
+        AddServiceWindow editServiceWindow = new AddServiceWindow(service);
+        bool? result = editServiceWindow.ShowDialog();
+
+        if (result == true)
+        {
+            MessageBox.Show("Service modifié avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadServices(); 
+        }
     }
 
     private async void LoadServices()
