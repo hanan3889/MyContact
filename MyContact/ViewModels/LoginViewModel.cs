@@ -56,16 +56,16 @@ namespace MyContact.ViewModels
                 return;
             }
 
-            // 🔹 Vérifie si l'utilisateur est admin
+            //Vérifie si l'utilisateur est admin
             if (user.Roles == 0) // 0 = Admin
             {
                 MessageBox.Show("Connexion réussie !");
 
-                // 🔹 Ouvrir AdminWindow
+                //Ouvrir AdminWindow
                 AdminWindow adminWindow = new AdminWindow();
                 adminWindow.Show();
 
-                // 🔹 Fermer la fenêtre de connexion
+        
                 CloseLoginWindow();
             }
             else
