@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyContact.View"
         mc:Ignorable="d"
-        Title="AdminWindow" Height="450" Width="800">
+        Title="AdminWindow" Height="600" Width="1000">
+
     <DockPanel>
         <!-- Sidebar -->
         <Border Background="#339c33" Width="200">
@@ -15,37 +16,66 @@
                 <Button Content="Salariés" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16" Click="SalariesButton_Click"/>
                 <Button Content="Services" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16" Click="ServicesButton_Click"/>
                 <Button Content="Sites" Margin="10" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="16" Click="SitesButton_Click"/>
-                
-
             </StackPanel>
         </Border>
 
         <!-- Main Content -->
         <Grid Margin="10">
-            <StackPanel>
-                <Button Content="Ajouter un salarié" Background="#339c33" Foreground="White" FontSize="16" Margin="10" HorizontalAlignment="Left" Click="AddSalaryButton_Click"/>
-                <DataGrid x:Name="SalariesDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Width="Auto" ItemsSource="{Binding Salaries}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
-                        <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}"/>
-                        <DataGridTextColumn Header="Téléphone Fixe" Binding="{Binding TelephoneFixe}"/>
-                        <DataGridTextColumn Header="Téléphone Portable" Binding="{Binding TelephonePortable}"/>
-                        <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
-                        <DataGridTextColumn Header="Site Ville" Binding="{Binding SiteVille}"/>
-                        <DataGridTextColumn Header="Service Nom" Binding="{Binding ServiceNom}"/>
-                        <DataGridTemplateColumn Header="Actions">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="Edit" Margin="2" Click="EditSalaryButton_Click"/>
-                                        <Button Content="Delete" Margin="2" Click="DeleteSalaryButton_Click"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Bouton Ajouter un salarié -->
+            <Button Content="Ajouter un salarié" Background="#339c33" Foreground="White" FontSize="16" 
+                    Margin="10" HorizontalAlignment="Left" Click="AddSalaryButton_Click"/>
+
+            <DataGrid x:Name="SalariesDataGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" 
+                      ItemsSource="{Binding Salaries}" AlternatingRowBackground="#DFFFD6" RowBackground="White"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      CanUserResizeColumns="True">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
+                    <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*"/>
+                    <DataGridTextColumn Header="Téléphone Fixe" Binding="{Binding TelephoneFixe}" Width="*"/>
+                    <DataGridTextColumn Header="Téléphone Portable" Binding="{Binding TelephonePortable}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
+                    <DataGridTextColumn Header="Site Ville" Binding="{Binding SiteVille}" Width="*"/>
+                    <DataGridTextColumn Header="Service Nom" Binding="{Binding ServiceNom}" Width="*"/>
+
+                    <!-- Boutons Actions -->
+                    <DataGridTemplateColumn Header="Actions" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+
+                                    <!-- Bouton Modifier -->
+                                    <Button Margin="2" Click="EditSalaryButton_Click"
+                                            Background="Orange" Foreground="White" FontWeight="Bold"
+                                            Padding="5,2" ToolTip="Modifier">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="✏ " FontSize="14"/>
+                                            <TextBlock Text="Modifier"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <!-- Bouton Supprimer  -->
+                                    <Button Margin="2" Click="DeleteSalaryButton_Click"
+                                            Background="Red" Foreground="White" FontWeight="Bold"
+                                            Padding="5,2" ToolTip="Supprimer">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="🗑 " FontSize="14"/>
+                                            <TextBlock Text="Supprimer"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </DockPanel>
 </Window>

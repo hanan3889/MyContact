@@ -4,14 +4,34 @@
         Title="Ajouter / Modifier un Service"
         Height="200" Width="400" WindowStartupLocation="CenterOwner">
 
+    <Window.Resources>
+        <!-- Style pour le bouton Annuler -->
+        <Style x:Key="CancelButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Red"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Red"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- Style pour le bouton Confirmer -->
+        <Style x:Key="ConfirmButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Green"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Green"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="10">
         <StackPanel>
             <TextBlock Text="Nom du Service :" FontSize="14"/>
             <TextBox x:Name="ServiceNameTextBox" Margin="0,5,0,10"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Annuler" Width="80" Margin="5" Click="Cancel_Click"/>
-                <Button x:Name="ConfirmButton" Width="80" Margin="5" Click="Confirm_Click"/>
+                <Button Content="Annuler" Width="80" Margin="5" Click="Cancel_Click" Style="{StaticResource CancelButtonStyle}"/>
+                <Button x:Name="ConfirmButton" Content="Confirmer" Width="80" Margin="5" Click="Confirm_Click" Style="{StaticResource ConfirmButtonStyle}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
