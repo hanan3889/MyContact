@@ -7,6 +7,26 @@
         Title="Ajouter / Modifier un Service"
         Height="450" Width="600">
 
+    <Window.Resources>
+        <!-- Style pour le bouton Modifier -->
+        <Style x:Key="EditButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Orange"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Orange"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- Style pour le bouton Supprimer -->
+        <Style x:Key="DeleteButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Red"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Red"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="10">
         <StackPanel>
             <!-- Bouton Ajouter un Service -->
@@ -25,10 +45,12 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Button Content="Modifier" Margin="2"
                                             Command="{Binding DataContext.EditServiceCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource EditButtonStyle}"/>
                                     <Button Content="Supprimer" Margin="2"
                                             Command="{Binding DataContext.DeleteServiceCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

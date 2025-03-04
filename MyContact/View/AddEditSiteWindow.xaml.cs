@@ -1,11 +1,10 @@
 ﻿using System.Windows;
-using MahApps.Metro.Controls;
 using MyContact.Models;
 using MyContact.ViewModels;
 
 namespace MyContact.View
 {
-    public partial class AddEditSiteWindow : MetroWindow
+    public partial class AddEditSiteWindow : Window
     {
         public EditSiteViewModel ViewModel { get; }
         public object Site { get; internal set; }
