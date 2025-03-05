@@ -41,8 +41,8 @@
                     <DataGridTextColumn Header="Téléphone Fixe" Binding="{Binding TelephoneFixe}" Width="*"/>
                     <DataGridTextColumn Header="Téléphone Portable" Binding="{Binding TelephonePortable}" Width="*"/>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
-                    <DataGridTextColumn Header="Site Ville" Binding="{Binding SiteVille}" Width="*"/>
-                    <DataGridTextColumn Header="Service Nom" Binding="{Binding ServiceNom}" Width="*"/>
+                    <DataGridTextColumn Header="Ville" Binding="{Binding SiteVille}" Width="*"/>
+                    <DataGridTextColumn Header="Service" Binding="{Binding ServiceNom}" Width="*"/>
 
                     <!-- Boutons Actions -->
                     <DataGridTemplateColumn Header="Actions" Width="Auto">
