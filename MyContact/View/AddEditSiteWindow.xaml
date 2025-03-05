@@ -1,4 +1,4 @@
-﻿<Window x:Class="MyContact.View.AddEditSiteWindow"
+<Window x:Class="MyContact.View.AddEditSiteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -18,7 +18,7 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
             <TextBlock Text="Nom de la ville :" FontSize="16" FontWeight="Bold"/>
             <TextBox Text="{Binding Ville, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-         Margin="0,5,0,10" Height="30"/>
+                     Margin="0,5,0,10" Height="30"/>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
