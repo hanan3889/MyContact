@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,8 +16,8 @@ namespace MyContact.ViewModels
         private readonly HttpClient _httpClient;
         private readonly SitesService _sitesService;
         private ObservableCollection<Sites> _sites;
-        public Sites Site { get; private set; } = new Sites(); 
 
+        public Sites Site { get; private set; } = new Sites();
 
         public ICommand LoadSitesCommand { get; }
         public ICommand AddSiteCommand { get; }
@@ -28,7 +27,7 @@ namespace MyContact.ViewModels
         public SitesViewModel()
         {
             _httpClient = new HttpClient { BaseAddress = new System.Uri("http://localhost:5110") };
-            _sitesService = new SitesService();
+            _sitesService = new SitesService(); 
             _sites = new ObservableCollection<Sites>();
 
             LoadSitesCommand = new RelayCommand(async (_) => await LoadSites());
@@ -36,7 +35,7 @@ namespace MyContact.ViewModels
             EditSiteCommand = new RelayCommand<Sites>(async (site) => await EditSite(site));
             DeleteSiteCommand = new RelayCommand<Sites>(async (site) => await DeleteSite(site));
 
-            LoadSitesCommand.Execute(null);
+            LoadSitesCommand.Execute(null); 
         }
 
         public ObservableCollection<Sites> Sites
@@ -48,6 +47,8 @@ namespace MyContact.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public object SitesService { get; internal set; }
 
         private async Task LoadSites()
         {
@@ -69,18 +70,17 @@ namespace MyContact.ViewModels
 
         private async Task AddSite()
         {
-            var addWindow = new AddEditSiteWindow();
+            var newSite = new Sites();
+            var addWindow = new AddEditSiteWindow(newSite);
             bool? result = addWindow.ShowDialog();
 
-            if (result == true)
+            if (result == true && !string.IsNullOrWhiteSpace(newSite.Ville))
             {
-                Sites newSite = (Sites)addWindow.Site;
-                MessageBox.Show($"Ajout du site : {newSite.Ville}");
-
                 bool success = await _sitesService.AddSiteAsync(newSite);
+
                 if (success)
                 {
-                    Sites.Add(newSite);
+                    await LoadSites();
                     MessageBox.Show("Site ajouté avec succès !");
                 }
                 else
@@ -94,20 +94,21 @@ namespace MyContact.ViewModels
         {
             if (site == null) return;
 
-            var editWindow = new AddEditSiteWindow(site);
+            var editWindow = new AddEditSiteWindow(site); 
             bool? result = editWindow.ShowDialog();
 
             if (result == true)
             {
-                Sites updatedSite = (Sites)editWindow.Site;
-                bool success = await _sitesService.UpdateSiteAsync(updatedSite);
+                Sites updatedSite = editWindow.Site; 
+
+                bool success = await _sitesService.UpdateSiteAsync(updatedSite); 
 
                 if (success)
                 {
                     int index = Sites.IndexOf(site);
                     if (index >= 0)
                     {
-                        Sites[index] = updatedSite;
+                        Sites[index] = updatedSite; 
                     }
                     MessageBox.Show("Site modifié avec succès !");
                 }

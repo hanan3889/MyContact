@@ -1,47 +1,35 @@
 ﻿using System.Windows;
-using MahApps.Metro.Controls;
 using MyContact.Models;
-using MyContact.ViewModels;
 
 namespace MyContact.View
 {
-    public partial class AddEditSiteWindow : MetroWindow
+    public partial class AddEditSiteWindow : Window
     {
-        public EditSiteViewModel ViewModel { get; }
-        public object Site { get; internal set; }
+        public Sites Site { get; private set; }
 
-        public AddEditSiteWindow()
+        public AddEditSiteWindow(Sites site = null)
         {
             InitializeComponent();
-            ViewModel = new EditSiteViewModel(new Sites());  
-            DataContext = ViewModel;
-            ConfigureEventHandlers();
-        }
-
-        
-        public AddEditSiteWindow(Sites site) : this()
-        {
-            ViewModel = new EditSiteViewModel(site);
-            DataContext = ViewModel;
-        }
-
-        private void ConfigureEventHandlers()
-        {
-            ViewModel.OnSaveCompleted += (sender, success) =>
-            {
-                DialogResult = success;
-                Close();
-            };
+            Site = site ?? new Sites();
+            DataContext = Site;  
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.SaveCommand.Execute(null);
+            if (string.IsNullOrWhiteSpace(Site.Ville))
+            {
+                MessageBox.Show("Veuillez entrer un nom de ville.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            DialogResult = true;
+            Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.CancelCommand.Execute(null);
+            DialogResult = false;
+            Close();
         }
     }
 }
