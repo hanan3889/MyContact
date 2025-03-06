@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:SitesViewModel}"
         mc:Ignorable="d"
         Title="Gestion des Sites"
-        Height="450" Width="800"
+        Height="450" Width="600"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -36,54 +36,48 @@
     </Window.Resources>
 
     <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <StackPanel>
+            <!-- Bouton Ajouter un Site -->
+            <Button Content="Ajouter un site"
+                    Background="#339c33"
+                    Foreground="White"
+                    FontSize="16"
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    Click="AddSiteButton_Click"
+                    Style="{StaticResource RoundedButtonStyle}" />
 
-        <DockPanel Grid.Row="0">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                <Button Content="Ajouter un site"
-                        Width="150"
-                        Height="30"
-                        Margin="10"
-                        Padding="0"
-                        Click="AddSiteButton_Click"
-                        Style="{StaticResource RoundedButtonStyle}" />
-            </StackPanel>
-        </DockPanel>
-
-        <DataGrid x:Name="SitesDataGrid"
-                  Grid.Row="1"
-                  AutoGenerateColumns="False"
-                  Margin="10"
-                  ItemsSource="{Binding Sites}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
-                <DataGridTextColumn Header="Nom du site" Binding="{Binding Ville}" Width="*"/>
-                <DataGridTemplateColumn Header="Actions">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="Modifier"
-                                        Width="80"
-                                        Margin="2"
-                                        Click="EditSiteButton_Click"
-                                        Style="{StaticResource RoundedButtonStyle}"/>
-                                <Button Content="Supprimer"
-                                        Width="80"
-                                        Margin="2"
-                                        Click="DeleteSiteButton_Click"
-                                        Background="Red"
-                                        Foreground="White"
-                                        BorderBrush="Red"
-                                        Style="{StaticResource RoundedButtonStyle}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+            <!-- DataGrid pour afficher les sites -->
+            <DataGrid x:Name="SitesDataGrid"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      Margin="10"
+                      ItemsSource="{Binding Sites, UpdateSourceTrigger=PropertyChanged}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                    <DataGridTextColumn Header="Nom du site" Binding="{Binding Ville}" Width="*"/>
+                    <DataGridTemplateColumn Header="Actions">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Modifier"
+                                            Margin="2"
+                                            Click="EditSiteButton_Click"
+                                            Style="{StaticResource RoundedButtonStyle}"
+                                            Background="Orange"/>
+                                    <Button Content="Supprimer"
+                                            Margin="2"
+                                            Click="DeleteSiteButton_Click"
+                                            Background="Red"
+                                            Foreground="White"
+                                            BorderBrush="Red"
+                                            Style="{StaticResource RoundedButtonStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </Grid>
 </Window>

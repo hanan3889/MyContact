@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,8 +16,8 @@ namespace MyContact.ViewModels
         private readonly HttpClient _httpClient;
         private readonly SitesService _sitesService;
         private ObservableCollection<Sites> _sites;
-        public Sites Site { get; private set; } = new Sites(); 
 
+        public Sites Site { get; private set; } = new Sites();
 
         public ICommand LoadSitesCommand { get; }
         public ICommand AddSiteCommand { get; }
@@ -49,6 +48,8 @@ namespace MyContact.ViewModels
             }
         }
 
+        public object SitesService { get; internal set; }
+
         private async Task LoadSites()
         {
             try
@@ -69,18 +70,17 @@ namespace MyContact.ViewModels
 
         private async Task AddSite()
         {
-            var addWindow = new AddEditSiteWindow();
+            var newSite = new Sites();
+            var addWindow = new AddEditSiteWindow(newSite);
             bool? result = addWindow.ShowDialog();
 
-            if (result == true)
+            if (result == true && !string.IsNullOrWhiteSpace(newSite.Ville))
             {
-                Sites newSite = (Sites)addWindow.Site;
-                MessageBox.Show($"Ajout du site : {newSite.Ville}");
-
                 bool success = await _sitesService.AddSiteAsync(newSite);
+
                 if (success)
                 {
-                    Sites.Add(newSite);
+                    await LoadSites();
                     MessageBox.Show("Site ajouté avec succès !");
                 }
                 else
@@ -99,7 +99,8 @@ namespace MyContact.ViewModels
 
             if (result == true)
             {
-                Sites updatedSite = (Sites)editWindow.Site;
+                Sites updatedSite = editWindow.Site;
+
                 bool success = await _sitesService.UpdateSiteAsync(updatedSite);
 
                 if (success)

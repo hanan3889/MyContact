@@ -1,29 +1,23 @@
 ﻿using System.Windows;
 using MyContact.ViewModels;
 using MyContact.Models;
-using System.Windows.Input;
-using MyContact.Commands;
-using MyContact.View;
-
-
+using MyContact.Services;
 
 namespace MyContact.View
 {
     public partial class SitesWindow : Window
     {
         private readonly SitesViewModel _viewModel;
-
-        public SitesViewModel DataContext { get; }
-
+        private readonly SitesService _sitesService;
         public SitesWindow()
         {
             InitializeComponent();
             _viewModel = new SitesViewModel();
+            _sitesService = new SitesService();
             DataContext = _viewModel;
         }
 
-        //Ouvrir la fenêtre d'ajout d'un site
-        private void AddSiteButton_Click(object sender, RoutedEventArgs e)
+        private async void AddSiteButton_Click(object sender, RoutedEventArgs e)
         {
             var addWindow = new AddEditSiteWindow();
             bool? result = addWindow.ShowDialog();
@@ -31,12 +25,22 @@ namespace MyContact.View
             if (result == true)
             {
                 var newSite = addWindow.Site;
-                _viewModel.AddSiteCommand.Execute(newSite);
+                _viewModel.Sites.Add(newSite);
+
+
+                bool success = await _sitesService.AddSiteAsync(newSite);
+                if (success)
+                {
+                    MessageBox.Show("Site ajouté avec succès !");
+                }
+                else
+                {
+                    MessageBox.Show("Erreur lors de l'ajout du site.");
+                }
             }
         }
 
-        //Modifier un site sélectionné
-        private void EditSiteButton_Click(object sender, RoutedEventArgs e)
+        private async void EditSiteButton_Click(object sender, RoutedEventArgs e)
         {
             if (SitesDataGrid.SelectedItem is Sites selectedSite)
             {
@@ -46,7 +50,22 @@ namespace MyContact.View
                 if (result == true)
                 {
                     var updatedSite = editWindow.Site;
-                    _viewModel.EditSiteCommand.Execute(updatedSite);
+                    var index = _viewModel.Sites.IndexOf(selectedSite);
+                    if (index >= 0)
+                    {
+                        _viewModel.Sites[index] = updatedSite;
+
+
+                        bool success = await _sitesService.UpdateSiteAsync(updatedSite);
+                        if (success)
+                        {
+                            MessageBox.Show("Site modifié avec succès !");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Erreur lors de la mise à jour du site.");
+                        }
+                    }
                 }
             }
             else
@@ -55,8 +74,8 @@ namespace MyContact.View
             }
         }
 
-        //Supprimer un site sélectionné
-        private void DeleteSiteButton_Click(object sender, RoutedEventArgs e)
+        // Supprimer un site sélectionné
+        private async void DeleteSiteButton_Click(object sender, RoutedEventArgs e)
         {
             if (SitesDataGrid.SelectedItem is Sites selectedSite)
             {
@@ -65,7 +84,18 @@ namespace MyContact.View
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    _viewModel.DeleteSiteCommand.Execute(selectedSite);
+
+                    _viewModel.Sites.Remove(selectedSite);
+
+                    bool success = await _sitesService.DeleteSiteAsync(selectedSite.Id);
+                    if (success)
+                    {
+                        MessageBox.Show("Site supprimé avec succès !");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erreur lors de la suppression du site.");
+                    }
                 }
             }
             else
