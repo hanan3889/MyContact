@@ -1,17 +1,15 @@
-﻿<controls:MetroWindow x:Class="MyContact.View.SitesWindow"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:MyContact.View"
-                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      xmlns:viewmodels="clr-namespace:MyContact.ViewModels"
-                      d:DataContext="{d:DesignInstance Type=viewmodels:SitesViewModel}"
-                      mc:Ignorable="d"
-                      Title="Gestion des Sites"
-                      Height="450" Width="800"
-                      WindowStartupLocation="CenterScreen"
-                      GlowBrush="{DynamicResource AccentColorBrush}">
+﻿<Window x:Class="MyContact.View.SitesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyContact.View"
+        xmlns:viewmodels="clr-namespace:MyContact.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:SitesViewModel}"
+        mc:Ignorable="d"
+        Title="Gestion des Sites"
+        Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
@@ -45,7 +43,6 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <!-- Boutons d'actions à gauche -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                 <Button Content="Ajouter un site"
                         Width="150"
@@ -57,7 +54,6 @@
             </StackPanel>
         </DockPanel>
 
-        <!-- DataGrid pour afficher les sites -->
         <DataGrid x:Name="SitesDataGrid"
                   Grid.Row="1"
                   AutoGenerateColumns="False"
@@ -90,4 +86,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
-</controls:MetroWindow>
+</Window>

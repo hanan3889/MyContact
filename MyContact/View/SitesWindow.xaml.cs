@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using MyContact.ViewModels;
 using MyContact.Models;
-using MahApps.Metro.Controls;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.View;
@@ -10,7 +9,7 @@ using MyContact.View;
 
 namespace MyContact.View
 {
-    public partial class SitesWindow : MetroWindow
+    public partial class SitesWindow : Window
     {
         private readonly SitesViewModel _viewModel;
 
