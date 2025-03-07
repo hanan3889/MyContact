@@ -1,7 +1,9 @@
 ﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Autofac.Core;
 using MyContact.Models;
+using MyContact.View;
 
 namespace MyContact.Services
 {
@@ -57,6 +59,29 @@ namespace MyContact.Services
             }
             return new List<Salaries>();
         }
+
+        public async Task<List<ServicesModel>> GetServicesAsync()
+        {
+            var response = await _httpClient.GetAsync("https://localhost:7140/api/Services");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<ServicesModel>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<ServicesModel>();
+            }
+            return new List<ServicesModel>();
+        }
+
+        public async Task<List<Sites>> GetSitesAsync()
+        {
+            var response = await _httpClient.GetAsync("https://localhost:7140/api/Sites");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<Sites>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<Sites>();
+            }
+            return new List<Sites>();
+        }
+
 
     }
 }

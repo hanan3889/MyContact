@@ -37,21 +37,13 @@ namespace MyContact.View
 
         private async void AddSalaryButton_Click(object sender, RoutedEventArgs e)
         {
-            var newSalary = new Salaries
-            {
-                Nom = "Nouveau Nom",
-                Prenom = "Nouveau Prénom",
-                TelephoneFixe = "123456789",
-                TelephonePortable = "987654321",
-                Email = "nouveau@example.com",
-                SiteVille = "Nouvelle Ville",
-                ServiceNom = "Nouveau Service",
-                SiteId = 1,
-                ServiceId = 1
-            };
+            AddSalaryWindow addSalaryWindow = new AddSalaryWindow();
+            bool? result = addSalaryWindow.ShowDialog();
 
-            await _salariesService.CreateSalaryAsync(newSalary);
-            await LoadSalaries();
+            if (result == true)
+            {
+                await LoadSalaries(); 
+            }
         }
 
         private async void EditSalaryButton_Click(object sender, RoutedEventArgs e)
