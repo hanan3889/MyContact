@@ -29,11 +29,14 @@ namespace MyContact.Services
 
         public async Task<bool> CreateSalaryAsync(Salaries salary)
         {
-            var json = JsonSerializer.Serialize(salary);
+            var json = JsonSerializer.Serialize(salary, new JsonSerializerOptions { WriteIndented = true });
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("create", content);
+            string responseText = await response.Content.ReadAsStringAsync();
+
             return response.IsSuccessStatusCode;
         }
+
 
         public async Task<bool> UpdateSalaryAsync(Salaries salary)
         {
