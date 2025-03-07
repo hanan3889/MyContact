@@ -1,7 +1,9 @@
 ﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Autofac.Core;
 using MyContact.Models;
+using MyContact.View;
 
 namespace MyContact.Services
 {
@@ -27,11 +29,14 @@ namespace MyContact.Services
 
         public async Task<bool> CreateSalaryAsync(Salaries salary)
         {
-            var json = JsonSerializer.Serialize(salary);
+            var json = JsonSerializer.Serialize(salary, new JsonSerializerOptions { WriteIndented = true });
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("create", content);
+            string responseText = await response.Content.ReadAsStringAsync();
+
             return response.IsSuccessStatusCode;
         }
+
 
         public async Task<bool> UpdateSalaryAsync(Salaries salary)
         {
@@ -57,6 +62,29 @@ namespace MyContact.Services
             }
             return new List<Salaries>();
         }
+
+        public async Task<List<ServicesModel>> GetServicesAsync()
+        {
+            var response = await _httpClient.GetAsync("https://localhost:7140/api/Services");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<ServicesModel>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<ServicesModel>();
+            }
+            return new List<ServicesModel>();
+        }
+
+        public async Task<List<Sites>> GetSitesAsync()
+        {
+            var response = await _httpClient.GetAsync("https://localhost:7140/api/Sites");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<Sites>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<Sites>();
+            }
+            return new List<Sites>();
+        }
+
 
     }
 }
