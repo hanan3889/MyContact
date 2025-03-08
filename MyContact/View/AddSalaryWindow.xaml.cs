@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using MyContact.Models;
 using MyContact.Services;
@@ -42,7 +41,7 @@ namespace MyContact.View
             InitializeComponent();
             _salariesService = new SalariesService();
             DataContext = this;
-            _ = LoadData(); 
+            _ = LoadData();
         }
 
         private async Task LoadData()
@@ -96,8 +95,8 @@ namespace MyContact.View
                 Email = EmailTextBox.Text,
                 TelephoneFixe = TelephoneFixeTextBox.Text,
                 TelephonePortable = TelephonePortableTextBox.Text,
-                ServiceId = SelectedService.Id, 
-                SiteId = SelectedSite.Id 
+                ServiceId = SelectedService.Id,
+                SiteId = SelectedSite.Id
             };
 
             bool success = await _salariesService.CreateSalaryAsync(newSalary);

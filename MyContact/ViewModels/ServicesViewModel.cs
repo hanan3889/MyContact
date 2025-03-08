@@ -1,13 +1,11 @@
-﻿using MyContact.Commands;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using System.Windows;
-using System.Threading.Tasks;
 using MyContact.View;
 using MyContact.ViewModels;
-using System.Xml.Linq;
 
 public class ServicesViewModel : ViewModelBase
 {
@@ -72,14 +70,14 @@ public class ServicesViewModel : ViewModelBase
             return;
         }
 
-        
+
         AddServiceWindow editServiceWindow = new AddServiceWindow(service);
         bool? result = editServiceWindow.ShowDialog();
 
         if (result == true)
         {
             MessageBox.Show("Service modifié avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
-            LoadServices(); 
+            LoadServices();
         }
     }
 
