@@ -25,12 +25,12 @@
                  Grid.Row="1" Margin="80,0,0,5"
                 />
 
-        <TextBlock Text="Téléphone Fixe :" Grid.Row="2" FontSize="14" FontWeight="Bold"/>
+        <TextBlock Text="Tél Fixe :" Grid.Row="2" FontSize="14" FontWeight="Bold"/>
         <TextBox Text="{Binding Salary.TelephoneFixe, UpdateSourceTrigger=PropertyChanged}"
                  Grid.Row="2" Margin="80,0,0,5"
                   />
 
-        <TextBlock Text="Téléphone Portable :" Grid.Row="3" FontSize="14" FontWeight="Bold"/>
+        <TextBlock Text="Tél Portable :" Grid.Row="3" FontSize="14" FontWeight="Bold"/>
         <TextBox Text="{Binding Salary.TelephonePortable, UpdateSourceTrigger=PropertyChanged}"
                  Grid.Row="3" Margin="80,0,0,5" />
 
