@@ -1,9 +1,8 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Windows;
 using MyContact.Models;
-using System.Threading.Tasks;
-using System.Net.Http.Json;
 
 namespace MyContact.Services
 {

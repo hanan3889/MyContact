@@ -1,9 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using Autofac.Core;
 using MyContact.Models;
-using MyContact.View;
 
 namespace MyContact.Services
 {

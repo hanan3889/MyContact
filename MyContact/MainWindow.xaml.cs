@@ -1,5 +1,5 @@
-﻿using System.Windows.Input;
-using MahApps.Metro.Controls;
+﻿using System.Windows;
+using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.View;
 using MyContact.ViewModels;
@@ -7,7 +7,7 @@ using MyContact.Views;
 
 namespace MyContact
 {
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : Window
     {
         public ICommand OpenSearchSalaryViewCommand { get; }
         public ICommand OpenSearchSalaryByCityViewCommand { get; }

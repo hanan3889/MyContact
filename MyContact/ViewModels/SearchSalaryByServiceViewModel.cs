@@ -3,13 +3,16 @@ using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
+using System;
+using System.Threading.Tasks;
 
 namespace MyContact.ViewModels
 {
     public class SearchSalaryByServiceViewModel : ViewModelBase
     {
         private readonly ServicesService _servicesService;
-        private string _serviceName;
+        private ObservableCollection<ServicesModel> _services;
+        private ServicesModel _selectedService;
         private string _resultText;
         private ObservableCollection<Salaries> _salaries;
 
@@ -18,14 +21,26 @@ namespace MyContact.ViewModels
             _servicesService = new ServicesService();
             SearchCommand = new RelayCommand(SearchSalaryByService);
             _salaries = new ObservableCollection<Salaries>();
+            _services = new ObservableCollection<ServicesModel>();
+            LoadServices();
         }
 
-        public string ServiceName
+        public ObservableCollection<ServicesModel> Services
         {
-            get => _serviceName;
+            get => _services;
             set
             {
-                _serviceName = value;
+                _services = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ServicesModel SelectedService
+        {
+            get => _selectedService;
+            set
+            {
+                _selectedService = value;
                 OnPropertyChanged();
             }
         }
@@ -52,19 +67,30 @@ namespace MyContact.ViewModels
 
         public ICommand SearchCommand { get; }
 
+        private async void LoadServices()
+        {
+            try
+            {
+                var services = await _servicesService.GetAllServicesAsync();
+                Services = new ObservableCollection<ServicesModel>(services);
+            }
+            catch (Exception ex)
+            {
+                ResultText = $"Erreur lors du chargement des services: {ex.Message}";
+            }
+        }
+
         private async void SearchSalaryByService(object parameter)
         {
-            if (string.IsNullOrWhiteSpace(ServiceName))
+            if (SelectedService == null)
             {
-                ResultText = "Veuillez entrer un nom de service.";
+                ResultText = "Veuillez sélectionner un service.";
                 return;
             }
 
             try
             {
-                string formattedServiceName = char.ToUpper(ServiceName[0]) + ServiceName.Substring(1).ToLower();
-                var salaries = await _servicesService.GetSalariesByServiceNameAsync(formattedServiceName);
-
+                var salaries = await _servicesService.GetSalariesByServiceNameAsync(SelectedService.Nom);
                 Salaries.Clear();
 
                 if (salaries != null && salaries.Count > 0)
@@ -73,7 +99,6 @@ namespace MyContact.ViewModels
                     {
                         Salaries.Add(salary);
                     }
-
                     ResultText = $"{salaries.Count} salarié(s) trouvé(s).";
                 }
                 else

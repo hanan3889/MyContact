@@ -42,7 +42,7 @@ namespace MyContact.View
 
             if (result == true)
             {
-                await LoadSalaries(); 
+                await LoadSalaries();
             }
         }
 
@@ -59,7 +59,6 @@ namespace MyContact.View
                 }
             }
         }
-
 
         private async void DeleteSalaryButton_Click(object sender, RoutedEventArgs e)
         {
@@ -82,6 +81,33 @@ namespace MyContact.View
             }
         }
 
+        private async void DeleteSelectedButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedSalaries = Salaries.Where(s => s.IsSelected).ToList();
+            if (selectedSalaries.Any())
+            {
+                var result = MessageBox.Show($"Voulez-vous vraiment supprimer les {selectedSalaries.Count} salariés sélectionnés ?", "Confirmation", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    foreach (var salary in selectedSalaries)
+                    {
+                        bool success = await _salariesService.DeleteSalaryAsync(salary.Id);
+                        if (!success)
+                        {
+                            MessageBox.Show("Erreur lors de la suppression d'un salarié.");
+                            return;
+                        }
+                    }
+                    MessageBox.Show("Salariés supprimés !");
+                    await LoadSalaries();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Aucun salarié sélectionné.");
+            }
+        }
+
         private void SitesButton_Click(object sender, RoutedEventArgs e)
         {
             SitesWindow sitesWindow = new SitesWindow();
@@ -90,11 +116,23 @@ namespace MyContact.View
 
         private void ServicesButton_Click(object sender, RoutedEventArgs e)
         {
-            
             AddEditServiceWindow addEditServiceWindow = new AddEditServiceWindow();
             addEditServiceWindow.ShowDialog();
         }
 
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchTextBox.Text.ToLower();
+            var filteredSalaries = Salaries.Where(s =>
+                s.Nom.ToLower().Contains(searchText) ||
+                s.Prenom.ToLower().Contains(searchText) ||
+                s.Email.ToLower().Contains(searchText) ||
+                s.TelephoneFixe.ToLower().Contains(searchText) ||
+                s.TelephonePortable.ToLower().Contains(searchText) ||
+                s.SiteVille.ToLower().Contains(searchText) ||
+                s.ServiceNom.ToLower().Contains(searchText)).ToList();
 
+            SalariesDataGrid.ItemsSource = filteredSalaries;
+        }
     }
 }

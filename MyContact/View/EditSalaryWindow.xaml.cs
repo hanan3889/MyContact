@@ -1,10 +1,10 @@
-﻿using MahApps.Metro.Controls;
+﻿using System.Windows;
 using MyContact.Models;
 using MyContact.ViewModel;
 
 namespace MyContact.View
 {
-    public partial class EditSalaryWindow : MetroWindow
+    public partial class EditSalaryWindow : Window
     {
         public EditSalaryWindow(Salaries salary)
         {

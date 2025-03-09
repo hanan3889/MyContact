@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using MyContact.Models;
 using MyContact.Services;
-using System.Threading.Tasks;
 
 namespace MyContact.View
 {
@@ -11,7 +10,7 @@ namespace MyContact.View
         private readonly ServicesModel? _existingService;
 
         public string ServiceName { get; private set; } = string.Empty;
-        public int? ServiceId { get; private set; } 
+        public int? ServiceId { get; private set; }
 
         public AddServiceWindow(ServicesModel? service = null)
         {
@@ -49,7 +48,7 @@ namespace MyContact.View
 
             if (_existingService == null)
             {
-                
+
                 var newService = new ServicesModel { Nom = ServiceName };
                 var result = await _servicesService.AddServiceAsync(newService);
 
@@ -61,7 +60,7 @@ namespace MyContact.View
             }
             else
             {
-                
+
                 _existingService.Nom = ServiceName;
                 var result = await _servicesService.UpdateServiceAsync(_existingService);
 
