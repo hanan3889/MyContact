@@ -1,5 +1,5 @@
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Services;
@@ -32,48 +32,50 @@ namespace MyContact.ViewModels
 
         private async Task Login(object parameter)
         {
-            if (parameter is not PasswordBox passwordBox)
+            if (parameter is string[] passwords && passwords.Length == 2)
             {
-                MessageBox.Show("Erreur lors de la récupération du mot de passe.");
-                return;
-            }
+                string password = passwords[0];
+                string secretCode = passwords[1];
 
-            string password = passwordBox.Password;
+                if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(secretCode))
+                {
+                    MessageBox.Show("Veuillez entrer un email, un mot de passe et un code secret.");
+                    return;
+                }
 
-            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(password))
-            {
-                MessageBox.Show("Veuillez entrer un email et un mot de passe.");
-                return;
-            }
+                var user = await _usersService.AuthenticateUser(Email, password, secretCode);
 
-            var user = await _usersService.AuthenticateUser(Email, password);
+                if (user == null)
+                {
+                    MessageBox.Show("Email, mot de passe ou code secret incorrect.");
+                    return;
+                }
 
-            if (user == null)
-            {
-                MessageBox.Show("Email ou mot de passe incorrect.");
-                return;
-            }
+                // Vérifie si l'utilisateur est admin
+                if (user.Roles == 0) // 0 = Admin
+                {
+                    MessageBox.Show("Connexion réussie !");
 
-            // Vérifie si l'utilisateur est admin
-            if (user.Roles == 0) // 0 = Admin
-            {
-                MessageBox.Show("Connexion réussie !");
+                    // Ouvrir AdminWindow
+                    AdminWindow adminWindow = new AdminWindow();
+                    adminWindow.Show();
 
-                // Ouvrir AdminWindow
-                AdminWindow adminWindow = new AdminWindow();
-                adminWindow.Show();
-
-                CloseLoginWindow();
+                    CloseLoginWindow();
+                }
+                else
+                {
+                    MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
+                }
             }
             else
             {
-                MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
+                MessageBox.Show("Erreur lors de la récupération du mot de passe ou du code secret.");
             }
         }
 
         private void CloseLoginWindow()
         {
-            // 🔹 Trouve et ferme la fenêtre de connexion
+            // Trouve et ferme la fenêtre de connexion
             var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginWindow);
             loginWindow?.Close();
         }

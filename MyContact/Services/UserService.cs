@@ -1,8 +1,10 @@
 ﻿using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using MyContact.Models;
 using Newtonsoft.Json;
+using BCrypt.Net;
 
 namespace MyContact.Services
 {
@@ -17,9 +19,10 @@ namespace MyContact.Services
             _httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
         }
 
-        public async Task<bool> RegisterUser(string email, string password)
+        public async Task<bool> RegisterUser(string email, string password, string secretCode)
         {
-            var user = new { Email = email, Password = password, Roles = 1 };
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            var user = new { Email = email, Password = hashedPassword, SecretCode = secretCode, Roles = 1 };
             var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _httpClient.PostAsync("/api/Users/register", content);
@@ -27,10 +30,9 @@ namespace MyContact.Services
             return response.IsSuccessStatusCode;
         }
 
-
-        public async Task<Users?> AuthenticateUser(string email, string password)
+        public async Task<Users?> AuthenticateUser(string email, string password, string secretCode)
         {
-            var userCredentials = new { Email = email, Password = password };
+            var userCredentials = new { Email = email, Password = password, SecretCode = secretCode };
             var content = new StringContent(JsonConvert.SerializeObject(userCredentials), Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _httpClient.PostAsync("/api/Users/login", content);
@@ -44,6 +46,11 @@ namespace MyContact.Services
 
             string json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Users>(json);
+        }
+
+        internal async Task AuthenticateUser(string email, string password, object secretCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

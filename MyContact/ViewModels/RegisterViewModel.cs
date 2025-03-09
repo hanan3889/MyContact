@@ -13,6 +13,8 @@ namespace MyContact.ViewModels
         public ICommand RegisterCommand { get; }
 
         private string _email;
+        private string secretCode;
+
         public string Email
         {
             get { return _email; }
@@ -59,7 +61,7 @@ namespace MyContact.ViewModels
                 try
                 {
                     Console.WriteLine($"Tentative d'enregistrement de {Email}...");
-                    bool isRegistered = await _usersService.RegisterUser(Email, password);
+                    bool isRegistered = await _usersService.RegisterUser(Email, password, secretCode);
 
                     if (isRegistered)
                     {
