@@ -19,5 +19,7 @@ namespace MyContact.Models
         public string Password { get; set; }
 
         public int Roles { get; set; }
+        public string PasswordHash { get; internal set; }
+        public string SecretCode { get; internal set; }
     }
 }

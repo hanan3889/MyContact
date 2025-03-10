@@ -1,15 +1,14 @@
 ﻿using System.Windows;
-using MahApps.Metro.Controls;
-using MyContact.ViewModels;
+using System.Windows.Controls;
 
 namespace MyContact.View
 {
-    public partial class RegisterWindow : MetroWindow
+    public partial class RegisterWindow : Window
     {
         public RegisterWindow()
         {
             InitializeComponent();
-            var viewModel = new RegisterViewModel();
+            var viewModel = new ViewModels.RegisterViewModel();
             viewModel.CurrentWindow = this;
             DataContext = viewModel;
         }
@@ -26,6 +25,20 @@ namespace MyContact.View
             PasswordInput.Visibility = Visibility.Visible;
             PasswordTextBox.Visibility = Visibility.Collapsed;
             PasswordInput.Password = PasswordTextBox.Text;
+        }
+
+        private void ConfirmPasswordInput_Checked(object sender, RoutedEventArgs e)
+        {
+            ConfirmPasswordInput.Visibility = Visibility.Collapsed;
+            ConfirmPasswordTextBox.Visibility = Visibility.Visible;
+            ConfirmPasswordTextBox.Text = ConfirmPasswordInput.Password;
+        }
+
+        private void ConfirmPasswordInput_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ConfirmPasswordInput.Visibility = Visibility.Visible;
+            ConfirmPasswordTextBox.Visibility = Visibility.Collapsed;
+            ConfirmPasswordInput.Password = ConfirmPasswordTextBox.Text;
         }
     }
 }
