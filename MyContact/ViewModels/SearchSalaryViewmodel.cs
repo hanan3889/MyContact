@@ -1,6 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Services;
+using MyContact.Models;
 
 namespace MyContact.ViewModels
 {
@@ -8,12 +10,18 @@ namespace MyContact.ViewModels
     {
         private readonly SalariesService _salariesService;
         private string _salaryName;
-        private string _resultText;
+        private ObservableCollection<Salaries> _filteredSalaries;
+        private List<Salaries> _allSalaries;
+        private bool _listVisibility;
 
         public SearchSalaryViewModel()
         {
             _salariesService = new SalariesService();
-            SearchCommand = new RelayCommand(SearchSalary);
+            _filteredSalaries = new ObservableCollection<Salaries>();
+            _allSalaries = new List<Salaries>();
+            _listVisibility = false;
+            SearchCommand = new RelayCommand(async (_) => await LoadSalaries());
+            _ = LoadSalaries(); 
         }
 
         public string SalaryName
@@ -23,43 +31,58 @@ namespace MyContact.ViewModels
             {
                 _salaryName = value;
                 OnPropertyChanged();
+                FilterSalaries();
             }
         }
 
-        public string ResultText
+        public ObservableCollection<Salaries> FilteredSalaries
         {
-            get => _resultText;
+            get => _filteredSalaries;
             set
             {
-                _resultText = value;
+                _filteredSalaries = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ListVisibility
+        {
+            get => _listVisibility;
+            set
+            {
+                _listVisibility = value;
                 OnPropertyChanged();
             }
         }
 
         public ICommand SearchCommand { get; }
 
-        private async void SearchSalary(object parameter)
+        private async Task LoadSalaries()
         {
-            try
+            var salaries = await _salariesService.GetSalariesAsync();
+            if (salaries != null)
             {
-                var salaries = await _salariesService.GetSalariesByNameAsync(SalaryName);
-                if (salaries != null && salaries.Count > 0)
-                {
-                    var result = new List<string>();
-                    foreach (var salary in salaries)
-                    {
-                        result.Add($"Nom : {salary.Nom}\nPrénom : {salary.Prenom}\nTéléphone Fixe : {salary.TelephoneFixe}\nTéléphone Portable : {salary.TelephonePortable}\nEmail : {salary.Email}\nService : {salary.ServiceNom}\nVille : {salary.SiteVille}");
-                    }
-                    ResultText = string.Join("\n\n", result);
-                }
-                else
-                {
-                    ResultText = "Aucun salarié trouvé.";
-                }
+                _allSalaries = salaries;
+                FilterSalaries();
             }
-            catch (Exception ex)
+        }
+
+        private void FilterSalaries()
+        {
+            if (string.IsNullOrWhiteSpace(SalaryName))
             {
-                ResultText = $"Erreur: {ex.Message}";
+                FilteredSalaries.Clear();
+                ListVisibility = false;
+            }
+            else
+            {
+                var filtered = _allSalaries
+                    .Where(s => s.Nom.Contains(SalaryName, System.StringComparison.OrdinalIgnoreCase) ||
+                                s.Prenom.Contains(SalaryName, System.StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                FilteredSalaries = new ObservableCollection<Salaries>(filtered);
+                ListVisibility = filtered.Any();
             }
         }
     }

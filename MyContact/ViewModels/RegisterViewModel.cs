@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Services;
@@ -13,6 +12,8 @@ namespace MyContact.ViewModels
         public ICommand RegisterCommand { get; }
 
         private string _email;
+        private string _secretCode;
+
         public string Email
         {
             get { return _email; }
@@ -22,7 +23,19 @@ namespace MyContact.ViewModels
                 OnPropertyChanged(nameof(Email));
             }
         }
+
+        public string SecretCode
+        {
+            get { return _secretCode; }
+            set
+            {
+                _secretCode = value;
+                OnPropertyChanged(nameof(SecretCode));
+            }
+        }
+
         public Window CurrentWindow { get; set; }
+
         public RegisterViewModel()
         {
             _usersService = new UsersService("https://localhost:7140");
@@ -31,22 +44,21 @@ namespace MyContact.ViewModels
 
         private async void Register(object parameter)
         {
-
-
             if (string.IsNullOrWhiteSpace(Email))
             {
                 MessageBox.Show("Veuillez entrer un email.");
                 return;
             }
 
-            if (parameter is PasswordBox[] passwordBoxes && passwordBoxes.Length == 2)
+            if (parameter is string[] passwords && passwords.Length == 3)
             {
-                string password = passwordBoxes[0].Password;
-                string confirmPassword = passwordBoxes[1].Password;
+                string password = passwords[0];
+                string confirmPassword = passwords[1];
+                string secretCode = passwords[2];
 
-                if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
+                if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(secretCode))
                 {
-                    MessageBox.Show("Veuillez entrer un mot de passe.");
+                    MessageBox.Show("Enregistrement refusé. Vous n'êtes pas administrateur.");
                     return;
                 }
 
@@ -56,15 +68,31 @@ namespace MyContact.ViewModels
                     return;
                 }
 
+                if (secretCode != "12345")
+                {
+                    MessageBox.Show("Code secret incorrect.");
+                    return;
+                }
+
+
                 try
                 {
-                    Console.WriteLine($"Tentative d'enregistrement de {Email}...");
-                    bool isRegistered = await _usersService.RegisterUser(Email, password);
+                    bool isRegistered = await _usersService.RegisterUser(Email, password, secretCode);
 
                     if (isRegistered)
                     {
                         MessageBox.Show("Enregistrement réussi !");
-                        OpenAdminWindow();
+
+                        // Vérifiez le rôle de l'utilisateur
+                        var user = await _usersService.AuthenticateUser(Email, password, secretCode);
+                        if (user != null && user.Roles == 0) 
+                        {
+                            OpenAdminWindow();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
+                        }
                     }
                     else
                     {
@@ -82,7 +110,6 @@ namespace MyContact.ViewModels
             }
         }
 
-
         private void OpenAdminWindow()
         {
             if (CurrentWindow != null)
@@ -93,9 +120,8 @@ namespace MyContact.ViewModels
             }
             else
             {
-                MessageBox.Show("⚠️ Erreur : Fenêtre actuelle introuvable.");
+                MessageBox.Show("Erreur : Fenêtre actuelle introuvable.");
             }
         }
-
     }
 }
