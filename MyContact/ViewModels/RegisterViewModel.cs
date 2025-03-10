@@ -11,7 +11,10 @@ namespace MyContact.ViewModels
         private readonly UsersService _usersService;
         public ICommand RegisterCommand { get; }
 
+
         private string _email;
+        private string _password;
+        private string _confirmPassword;
         private string _secretCode;
 
         public string Email
@@ -21,6 +24,26 @@ namespace MyContact.ViewModels
             {
                 _email = value;
                 OnPropertyChanged(nameof(Email));
+            }
+        }
+
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                _password = value;
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        public string ConfirmPassword
+        {
+            get { return _confirmPassword; }
+            set
+            {
+                _confirmPassword = value;
+                OnPropertyChanged(nameof(ConfirmPassword));
             }
         }
 
@@ -38,75 +61,60 @@ namespace MyContact.ViewModels
 
         public RegisterViewModel()
         {
-            _usersService = new UsersService("https://localhost:7140");
+            _usersService = new UsersService("http://localhost:5110");
             RegisterCommand = new RelayCommand(Register);
         }
 
         private async void Register(object parameter)
         {
-            if (string.IsNullOrWhiteSpace(Email))
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(ConfirmPassword) || string.IsNullOrWhiteSpace(SecretCode))
             {
-                MessageBox.Show("Veuillez entrer un email.");
+                MessageBox.Show("Veuillez remplir tous les champs.");
                 return;
             }
 
-            if (parameter is string[] passwords && passwords.Length == 3)
+            if (Password != ConfirmPassword)
             {
-                string password = passwords[0];
-                string confirmPassword = passwords[1];
-                string secretCode = passwords[2];
+                MessageBox.Show("Les mots de passe ne correspondent pas.");
+                return;
+            }
 
-                if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(secretCode))
+            if (SecretCode != "12345")
+            {
+
+                MessageBox.Show("Code secret incorrect.");
+                return;
+            }
+
+
+
+            try
+            {
+                bool isRegistered = await _usersService.RegisterUser(Email, Password, SecretCode);
+
+                if (isRegistered)
                 {
-                    MessageBox.Show("Enregistrement refusé. Vous n'êtes pas administrateur.");
-                    return;
-                }
+                    MessageBox.Show("Enregistrement réussi !");
 
-                if (password != confirmPassword)
-                {
-                    MessageBox.Show("Les mots de passe ne correspondent pas.");
-                    return;
-                }
-
-                if (secretCode != "12345")
-                {
-                    MessageBox.Show("Code secret incorrect.");
-                    return;
-                }
-
-
-                try
-                {
-                    bool isRegistered = await _usersService.RegisterUser(Email, password, secretCode);
-
-                    if (isRegistered)
+                    // Vérifiez le rôle de l'utilisateur
+                    var user = await _usersService.AuthenticateUser(Email, Password, SecretCode);
+                    if (user != null && user.Roles == 0)
                     {
-                        MessageBox.Show("Enregistrement réussi !");
-
-                        // Vérifiez le rôle de l'utilisateur
-                        var user = await _usersService.AuthenticateUser(Email, password, secretCode);
-                        if (user != null && user.Roles == 0) 
-                        {
-                            OpenAdminWindow();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
-                        }
+                        OpenAdminWindow();
                     }
                     else
                     {
-                        MessageBox.Show("Erreur lors de l'enregistrement.");
+                        MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show($"Erreur lors de l'enregistrement : {ex.Message}");
+                    MessageBox.Show("Erreur lors de l'enregistrement.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Erreur : Impossible de récupérer les champs de mot de passe.");
+                MessageBox.Show($"Erreur lors de l'enregistrement : {ex.Message}");
             }
         }
 
@@ -124,4 +132,7 @@ namespace MyContact.ViewModels
             }
         }
     }
+
+
+
 }

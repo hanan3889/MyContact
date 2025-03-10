@@ -13,6 +13,7 @@ namespace MyContact.View
             DataContext = viewModel;
         }
 
+
         private void PasswordInput_Checked(object sender, RoutedEventArgs e)
         {
             PasswordInput.Visibility = Visibility.Collapsed;
@@ -40,5 +41,32 @@ namespace MyContact.View
             ConfirmPasswordTextBox.Visibility = Visibility.Collapsed;
             ConfirmPasswordInput.Password = ConfirmPasswordTextBox.Text;
         }
+
+        private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.RegisterViewModel vm)
+            {
+                vm.Password = PasswordInput.Password;
+            }
+        }
+
+        private void ConfirmPasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.RegisterViewModel vm)
+            {
+                vm.ConfirmPassword = ConfirmPasswordInput.Password;
+            }
+        }
+
+        private void SecretCodeInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.RegisterViewModel vm)
+            {
+                vm.SecretCode = SecretCodeInput.Password;
+            }
+        }
     }
+
+
+
 }
