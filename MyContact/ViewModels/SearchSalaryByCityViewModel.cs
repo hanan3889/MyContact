@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Models;
@@ -9,23 +10,36 @@ namespace MyContact.ViewModels
     public class SearchSalaryByCityViewModel : ViewModelBase
     {
         private readonly SitesService _sitesService;
-        private string _cityName;
         private string _resultText;
         private ObservableCollection<Salaries> _salaries;
+        private ObservableCollection<Sites> _sites;
+        private Sites _selectedSite;
 
         public SearchSalaryByCityViewModel()
         {
             _sitesService = new SitesService();
             SearchCommand = new RelayCommand(SearchSalaryByCity);
             _salaries = new ObservableCollection<Salaries>();
+            _sites = new ObservableCollection<Sites>();
+            LoadSites();
         }
 
-        public string CityName
+        public ObservableCollection<Sites> Sites
         {
-            get => _cityName;
+            get => _sites;
             set
             {
-                _cityName = value;
+                _sites = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Sites SelectedSite
+        {
+            get => _selectedSite;
+            set
+            {
+                _selectedSite = value;
                 OnPropertyChanged();
             }
         }
@@ -52,18 +66,23 @@ namespace MyContact.ViewModels
 
         public ICommand SearchCommand { get; }
 
+        private async void LoadSites()
+        {
+            var sitesList = await _sitesService.GetSitesAsync();
+            Sites = new ObservableCollection<Sites>(sitesList);
+        }
+
         private async void SearchSalaryByCity(object parameter)
         {
-            if (string.IsNullOrWhiteSpace(CityName))
+            if (SelectedSite == null)
             {
-                ResultText = "Veuillez entrer un nom de ville.";
+                ResultText = "Veuillez sélectionner une ville.";
                 return;
             }
 
             try
             {
-                string formattedCityName = char.ToUpper(CityName[0]) + CityName.Substring(1).ToLower();
-                var salaries = await _sitesService.GetSalariesByCityAsync(formattedCityName);
+                var salaries = await _sitesService.GetSalariesByCityAsync(SelectedSite.Ville);
 
                 Salaries.Clear(); // Nettoyage avant ajout de nouveaux résultats
 
@@ -73,7 +92,6 @@ namespace MyContact.ViewModels
                     {
                         Salaries.Add(salary);
                     }
-
                     ResultText = $"{salaries.Count} salarié(s) trouvé(s).";
                 }
                 else
