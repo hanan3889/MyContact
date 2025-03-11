@@ -35,4 +35,11 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Back\" />
+    <Folder Include="ViewModels\Front\" />
+    <Folder Include="View\Front\" />
+    <Folder Include="View\Back\" />
+  </ItemGroup>
+
 </Project>
