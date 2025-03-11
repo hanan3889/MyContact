@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MyContact.ViewModels;
 
 namespace MyContact.View
 {
@@ -44,7 +45,7 @@ namespace MyContact.View
 
         private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.RegisterViewModel vm)
+            if (DataContext is RegisterViewModel vm)
             {
                 vm.Password = PasswordInput.Password;
             }
@@ -52,7 +53,7 @@ namespace MyContact.View
 
         private void ConfirmPasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.RegisterViewModel vm)
+            if (DataContext is RegisterViewModel vm)
             {
                 vm.ConfirmPassword = ConfirmPasswordInput.Password;
             }
@@ -60,7 +61,7 @@ namespace MyContact.View
 
         private void SecretCodeInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.RegisterViewModel vm)
+            if (DataContext is RegisterViewModel vm)
             {
                 vm.SecretCode = SecretCodeInput.Password;
             }

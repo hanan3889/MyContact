@@ -54,7 +54,6 @@
                       Margin="10"
                       ItemsSource="{Binding Sites, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                     <DataGridTextColumn Header="Nom du site" Binding="{Binding Ville}" Width="*"/>
                     <DataGridTemplateColumn Header="Actions">
                         <DataGridTemplateColumn.CellTemplate>

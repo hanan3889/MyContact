@@ -8,7 +8,7 @@ using MyContact.Models;
 using MyContact.Services;
 using MyContact.View;
 
-namespace MyContact.ViewModels
+namespace MyContact.ViewModels.Front
 {
     public class SitesViewModel : ViewModelBase
     {
@@ -25,7 +25,7 @@ namespace MyContact.ViewModels
 
         public SitesViewModel()
         {
-            _httpClient = new HttpClient { BaseAddress = new System.Uri("http://localhost:5110") };
+            _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5110") };
             _sitesService = new SitesService();
             _sites = new ObservableCollection<Sites>();
 

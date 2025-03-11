@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.View;
+using MyContact.ViewModels.Front;
 using MyContact.ViewModels;
 using MyContact.Views;
 

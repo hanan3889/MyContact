@@ -5,7 +5,7 @@ using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
 
-namespace MyContact.ViewModels
+namespace MyContact.ViewModels.Back
 {
     public class EditSiteViewModel : INotifyPropertyChanged
     {
@@ -52,7 +52,7 @@ namespace MyContact.ViewModels
             OnSaveCompleted?.Invoke(this, false);
         }
 
-        public event System.Action<object, bool> OnSaveCompleted;
+        public event Action<object, bool> OnSaveCompleted;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

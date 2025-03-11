@@ -4,7 +4,7 @@ using MyContact.Commands;
 using MyContact.Services;
 using MyContact.Models;
 
-namespace MyContact.ViewModels
+namespace MyContact.ViewModels.Front
 {
     public class SearchSalaryViewModel : ViewModelBase
     {
@@ -21,7 +21,7 @@ namespace MyContact.ViewModels
             _allSalaries = new List<Salaries>();
             _listVisibility = false;
             SearchCommand = new RelayCommand(async (_) => await LoadSalaries());
-            _ = LoadSalaries(); 
+            _ = LoadSalaries();
         }
 
         public string SalaryName
@@ -77,8 +77,8 @@ namespace MyContact.ViewModels
             else
             {
                 var filtered = _allSalaries
-                    .Where(s => s.Nom.Contains(SalaryName, System.StringComparison.OrdinalIgnoreCase) ||
-                                s.Prenom.Contains(SalaryName, System.StringComparison.OrdinalIgnoreCase))
+                    .Where(s => s.Nom.Contains(SalaryName, StringComparison.OrdinalIgnoreCase) ||
+                                s.Prenom.Contains(SalaryName, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 FilteredSalaries = new ObservableCollection<Salaries>(filtered);

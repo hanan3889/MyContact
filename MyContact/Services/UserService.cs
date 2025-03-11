@@ -40,7 +40,6 @@ namespace MyContact.Services
             if (!response.IsSuccessStatusCode)
             {
                 string errorContent = await response.Content.ReadAsStringAsync();
-                MessageBox.Show($"Erreur API : {response.StatusCode} - {errorContent}", "Erreur Authentification");
                 return null;
             }
 

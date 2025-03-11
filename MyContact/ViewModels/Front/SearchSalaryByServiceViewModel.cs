@@ -6,7 +6,7 @@ using MyContact.Services;
 using System;
 using System.Threading.Tasks;
 
-namespace MyContact.ViewModels
+namespace MyContact.ViewModels.Front
 {
     public class SearchSalaryByServiceViewModel : ViewModelBase
     {

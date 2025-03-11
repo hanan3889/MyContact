@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MyContact.Models;
@@ -9,6 +11,7 @@ namespace MyContact.View
     public partial class AdminWindow : Window
     {
         private readonly SalariesService _salariesService;
+        private ObservableCollection<Salaries> _allSalaries; // Liste complète non filtrée
         public ObservableCollection<Salaries> Salaries { get; set; }
 
         public AdminWindow()
@@ -17,14 +20,37 @@ namespace MyContact.View
             DataContext = this;
             _salariesService = new SalariesService();
             Salaries = new ObservableCollection<Salaries>();
+            _allSalaries = new ObservableCollection<Salaries>();
             LoadSalaries();
         }
 
         private async Task LoadSalaries()
         {
             var salaries = await _salariesService.GetSalariesAsync();
+            _allSalaries.Clear();
             Salaries.Clear();
             foreach (var salary in salaries)
+            {
+                _allSalaries.Add(salary);
+                Salaries.Add(salary);
+            }
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = SearchTextBox.Text.ToLower();
+
+            var filteredSalaries = _allSalaries.Where(s =>
+                s.Nom.ToLower().Contains(searchText) ||
+                s.Prenom.ToLower().Contains(searchText) ||
+                s.Email.ToLower().Contains(searchText) ||
+                s.TelephoneFixe.ToLower().Contains(searchText) ||
+                s.TelephonePortable.ToLower().Contains(searchText) ||
+                s.SiteVille.ToLower().Contains(searchText) ||
+                s.ServiceNom.ToLower().Contains(searchText)).ToList();
+
+            Salaries.Clear();
+            foreach (var salary in filteredSalaries)
             {
                 Salaries.Add(salary);
             }
@@ -55,7 +81,18 @@ namespace MyContact.View
 
                 if (result == true)
                 {
-                    await LoadSalaries();
+                    var updatedSalary = _allSalaries.FirstOrDefault(s => s.Id == salary.Id);
+                    if (updatedSalary != null)
+                    {
+                        updatedSalary.Nom = salary.Nom;
+                        updatedSalary.Prenom = salary.Prenom;
+                        updatedSalary.TelephoneFixe = salary.TelephoneFixe;
+                        updatedSalary.TelephonePortable = salary.TelephonePortable;
+                        updatedSalary.Email = salary.Email;
+
+                        // Mise à jour du DataGrid
+                        SalariesDataGrid.Items.Refresh();
+                    }
                 }
             }
         }
@@ -118,21 +155,6 @@ namespace MyContact.View
         {
             AddEditServiceWindow addEditServiceWindow = new AddEditServiceWindow();
             addEditServiceWindow.ShowDialog();
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            string searchText = SearchTextBox.Text.ToLower();
-            var filteredSalaries = Salaries.Where(s =>
-                s.Nom.ToLower().Contains(searchText) ||
-                s.Prenom.ToLower().Contains(searchText) ||
-                s.Email.ToLower().Contains(searchText) ||
-                s.TelephoneFixe.ToLower().Contains(searchText) ||
-                s.TelephonePortable.ToLower().Contains(searchText) ||
-                s.SiteVille.ToLower().Contains(searchText) ||
-                s.ServiceNom.ToLower().Contains(searchText)).ToList();
-
-            SalariesDataGrid.ItemsSource = filteredSalaries;
         }
     }
 }
