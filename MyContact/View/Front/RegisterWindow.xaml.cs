@@ -9,43 +9,54 @@ namespace MyContact.View
         public RegisterWindow()
         {
             InitializeComponent();
-            var viewModel = new ViewModels.RegisterViewModel();
+            var viewModel = new RegisterViewModel();
             viewModel.CurrentWindow = this;
             DataContext = viewModel;
         }
 
-
         private void PasswordInput_Checked(object sender, RoutedEventArgs e)
         {
-            PasswordInput.Visibility = Visibility.Collapsed;
-            PasswordTextBox.Visibility = Visibility.Visible;
-            PasswordTextBox.Text = PasswordInput.Password;
+            if (PasswordInput != null && PasswordTextBox != null)
+            {
+                PasswordInput.Visibility = Visibility.Collapsed;
+                PasswordTextBox.Visibility = Visibility.Visible;
+                PasswordTextBox.Text = PasswordInput.Password;
+            }
         }
 
         private void PasswordInput_Unchecked(object sender, RoutedEventArgs e)
         {
-            PasswordInput.Visibility = Visibility.Visible;
-            PasswordTextBox.Visibility = Visibility.Collapsed;
-            PasswordInput.Password = PasswordTextBox.Text;
+            if (PasswordInput != null && PasswordTextBox != null)
+            {
+                PasswordInput.Visibility = Visibility.Visible;
+                PasswordTextBox.Visibility = Visibility.Collapsed;
+                PasswordInput.Password = PasswordTextBox.Text;
+            }
         }
 
         private void ConfirmPasswordInput_Checked(object sender, RoutedEventArgs e)
         {
-            ConfirmPasswordInput.Visibility = Visibility.Collapsed;
-            ConfirmPasswordTextBox.Visibility = Visibility.Visible;
-            ConfirmPasswordTextBox.Text = ConfirmPasswordInput.Password;
+            if (ConfirmPasswordInput != null && ConfirmPasswordTextBox != null)
+            {
+                ConfirmPasswordInput.Visibility = Visibility.Collapsed;
+                ConfirmPasswordTextBox.Visibility = Visibility.Visible;
+                ConfirmPasswordTextBox.Text = ConfirmPasswordInput.Password;
+            }
         }
 
         private void ConfirmPasswordInput_Unchecked(object sender, RoutedEventArgs e)
         {
-            ConfirmPasswordInput.Visibility = Visibility.Visible;
-            ConfirmPasswordTextBox.Visibility = Visibility.Collapsed;
-            ConfirmPasswordInput.Password = ConfirmPasswordTextBox.Text;
+            if (ConfirmPasswordInput != null && ConfirmPasswordTextBox != null)
+            {
+                ConfirmPasswordInput.Visibility = Visibility.Visible;
+                ConfirmPasswordTextBox.Visibility = Visibility.Collapsed;
+                ConfirmPasswordInput.Password = ConfirmPasswordTextBox.Text;
+            }
         }
 
         private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is RegisterViewModel vm)
+            if (DataContext is RegisterViewModel vm && PasswordInput != null)
             {
                 vm.Password = PasswordInput.Password;
             }
@@ -53,7 +64,7 @@ namespace MyContact.View
 
         private void ConfirmPasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is RegisterViewModel vm)
+            if (DataContext is RegisterViewModel vm && ConfirmPasswordInput != null)
             {
                 vm.ConfirmPassword = ConfirmPasswordInput.Password;
             }
@@ -61,13 +72,10 @@ namespace MyContact.View
 
         private void SecretCodeInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is RegisterViewModel vm)
+            if (DataContext is RegisterViewModel vm && SecretCodeInput != null)
             {
                 vm.SecretCode = SecretCodeInput.Password;
             }
         }
     }
-
-
-
 }
