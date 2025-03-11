@@ -5,7 +5,7 @@ using MyContact.Commands;
 using MyContact.Services;
 using MyContact.View;
 
-namespace MyContact.ViewModels
+namespace MyContact.ViewModels.Front
 {
     public class LoginViewModel : ViewModelBase
     {
@@ -47,6 +47,7 @@ namespace MyContact.ViewModels
 
                 if (user == null)
                 {
+                    
                     MessageBox.Show("Email, mot de passe ou code secret incorrect.");
                     return;
                 }

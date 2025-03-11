@@ -1,4 +1,4 @@
-﻿namespace MyContact.ViewModels
+﻿namespace MyContact.ViewModels.Back
 {
     class AdminViewModel
     {

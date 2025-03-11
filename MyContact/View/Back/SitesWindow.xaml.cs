@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using MyContact.Models;
 using MyContact.Services;
-using MyContact.ViewModels;
+using MyContact.ViewModels.Front;
 
 namespace MyContact.View
 {

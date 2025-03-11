@@ -37,7 +37,7 @@
             <DataGrid x:Name="ServicesDataGrid" AutoGenerateColumns="False" CanUserAddRows="False"
                       ItemsSource="{Binding Services, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                    
                     <DataGridTextColumn Header="Nom du Service" Binding="{Binding Nom}" Width="*"/>
                     <DataGridTemplateColumn Header="Actions">
                         <DataGridTemplateColumn.CellTemplate>

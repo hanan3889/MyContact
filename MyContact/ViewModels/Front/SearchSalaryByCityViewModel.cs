@@ -5,7 +5,7 @@ using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
 
-namespace MyContact.ViewModels
+namespace MyContact.ViewModels.Front
 {
     public class SearchSalaryByCityViewModel : ViewModelBase
     {

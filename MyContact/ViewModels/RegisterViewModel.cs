@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Services;
@@ -10,7 +11,6 @@ namespace MyContact.ViewModels
     {
         private readonly UsersService _usersService;
         public ICommand RegisterCommand { get; }
-
 
         private string _email;
         private string _password;
@@ -79,13 +79,12 @@ namespace MyContact.ViewModels
                 return;
             }
 
-            if (SecretCode != "12345")
+            // Vérification du format du SecretCode (4 chiffres)
+            if (SecretCode.Length != 4 || !int.TryParse(SecretCode, out _))
             {
-
-                MessageBox.Show("Code secret incorrect.");
+                MessageBox.Show("Le code secret doit être un nombre à 4 chiffres.");
                 return;
             }
-
 
 
             try
@@ -98,7 +97,7 @@ namespace MyContact.ViewModels
 
                     // Vérifiez le rôle de l'utilisateur
                     var user = await _usersService.AuthenticateUser(Email, Password, SecretCode);
-                    if (user != null && user.Roles == 0)
+                    if (user != null && user.Roles == 1) 
                     {
                         OpenAdminWindow();
                     }
@@ -132,7 +131,4 @@ namespace MyContact.ViewModels
             }
         }
     }
-
-
-
 }

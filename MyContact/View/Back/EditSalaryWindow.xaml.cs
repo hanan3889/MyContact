@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using MyContact.Models;
-using MyContact.ViewModel;
+using MyContact.ViewModels.Back;
 
 namespace MyContact.View
 {

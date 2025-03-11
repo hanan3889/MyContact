@@ -5,7 +5,7 @@ using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
 
-namespace MyContact.ViewModel
+namespace MyContact.ViewModels.Back
 {
     public class EditSalaryViewModel : INotifyPropertyChanged
     {
@@ -81,7 +81,7 @@ namespace MyContact.ViewModel
             OnSaveCompleted?.Invoke(this, false);
         }
 
-        public event System.Action<object, bool> OnSaveCompleted;
+        public event Action<object, bool> OnSaveCompleted;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

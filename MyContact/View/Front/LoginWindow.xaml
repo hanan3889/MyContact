@@ -25,7 +25,7 @@
                              Padding="5"/>
 
                 <!-- Secret Code Input -->
-                <TextBlock Text="Code secret (5 chiffres) :" FontSize="16" Margin="10,0,0,5"/>
+                <TextBlock Text="Code secret (4 chiffres) :" FontSize="16" Margin="10,0,0,5"/>
                 <PasswordBox x:Name="SecretCodeInput"
                              Width="250" Height="30"
                              BorderBrush="#339c33" BorderThickness="1"

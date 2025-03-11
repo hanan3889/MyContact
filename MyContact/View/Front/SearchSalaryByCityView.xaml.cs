@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MyContact.ViewModels.Front;
 using MyContact.ViewModels;
 
 namespace MyContact.Views
