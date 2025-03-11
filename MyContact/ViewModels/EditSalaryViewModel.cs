@@ -11,13 +11,24 @@ namespace MyContact.ViewModel
     {
         private readonly SalariesService _salariesService;
         private Salaries _salary;
+        private Salaries _editedSalary;
 
         public Salaries Salary
         {
             get => _salary;
-            set
+            private set
             {
                 _salary = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Salaries EditedSalary
+        {
+            get => _editedSalary;
+            set
+            {
+                _editedSalary = value;
                 OnPropertyChanged();
             }
         }
@@ -32,13 +43,30 @@ namespace MyContact.ViewModel
             _salariesService = new SalariesService();
             Salary = salary;
 
+            // Copier l'objet pour éviter la modification directe
+            EditedSalary = new Salaries
+            {
+                Id = salary.Id,
+                Nom = salary.Nom,
+                Prenom = salary.Prenom,
+                TelephoneFixe = salary.TelephoneFixe,
+                TelephonePortable = salary.TelephonePortable,
+                Email = salary.Email
+            };
+
             SaveCommand = new RelayCommand(async (param) => await Save(), (param) => CanSave());
             CancelCommand = new RelayCommand((param) => Cancel());
-
         }
 
         private async Task Save()
         {
+            // Copier les modifications vers Salary avant d'enregistrer
+            Salary.Nom = EditedSalary.Nom;
+            Salary.Prenom = EditedSalary.Prenom;
+            Salary.TelephoneFixe = EditedSalary.TelephoneFixe;
+            Salary.TelephonePortable = EditedSalary.TelephonePortable;
+            Salary.Email = EditedSalary.Email;
+
             bool success = await _salariesService.UpdateSalaryAsync(Salary);
             if (success)
             {
@@ -46,7 +74,7 @@ namespace MyContact.ViewModel
             }
         }
 
-        private bool CanSave() => !string.IsNullOrWhiteSpace(Salary.Nom) && !string.IsNullOrWhiteSpace(Salary.Email);
+        private bool CanSave() => !string.IsNullOrWhiteSpace(EditedSalary.Nom) && !string.IsNullOrWhiteSpace(EditedSalary.Email);
 
         private void Cancel()
         {

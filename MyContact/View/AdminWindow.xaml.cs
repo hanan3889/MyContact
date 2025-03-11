@@ -55,8 +55,20 @@ namespace MyContact.View
 
                 if (result == true)
                 {
-                    await LoadSalaries();
+                    var updatedSalary = Salaries.FirstOrDefault(s => s.Id == salary.Id);
+                    if (updatedSalary != null)
+                    {
+                        updatedSalary.Nom = salary.Nom;
+                        updatedSalary.Prenom = salary.Prenom;
+                        updatedSalary.TelephoneFixe = salary.TelephoneFixe;
+                        updatedSalary.TelephonePortable = salary.TelephonePortable;
+                        updatedSalary.Email = salary.Email;
+
+                        
+                        SalariesDataGrid.Items.Refresh();
+                    }
                 }
+
             }
         }
 
