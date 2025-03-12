@@ -18,6 +18,9 @@ namespace MyContact.ViewModels.Front
         {
             _usersService = new UsersService("http://localhost:5110");
             LoginCommand = new RelayCommand(async (parameter) => await Login(parameter));
+
+            // Champ email préremplis
+            Email = "admin@blocalimentation.fr";
         }
 
         public string Email

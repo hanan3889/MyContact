@@ -67,13 +67,14 @@
 
             <!-- Boutons Connexion et Enregistrement à droite -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                <Button Content="Connexion Admin"
+                <Button x:Name="LoginButton" Content="Connexion Admin"
                         Width="150"
                         Height="30"
                         Margin="10"
                         Padding="0"
                         Command="{Binding OpenLoginCommand}"
-                        Style="{StaticResource RoundedButtonStyle}"/>
+                        Style="{StaticResource RoundedButtonStyle}"
+                        Visibility="Collapsed"/>
 
                 <Button Content="S'enregistrer"
                         Width="150"

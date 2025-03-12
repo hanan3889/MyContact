@@ -27,6 +27,18 @@ namespace MyContact
                 OpenLoginCommand = new RelayCommand(OpenLogin),
                 OpenRegisterCommand = new RelayCommand(OpenRegister)
             };
+
+            // Ajouter de l evenement pour les touches
+            this.KeyDown += MainWindow_KeyDown;
+        }
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Si CTRL + P est pressé
+            if (e.Key == Key.P && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                // Rendre le bouton visible
+                LoginButton.Visibility = Visibility.Visible;
+            }
         }
 
         private void OpenLogin(object? obj)
