@@ -43,15 +43,15 @@
 
         <!-- Service -->
         <TextBlock Text="Service:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <ComboBox SelectedValue="{Binding EditedSalary.ServiceId, Mode=TwoWay}"
-                  DisplayMemberPath="Nom" SelectedValuePath="Id" ItemsSource="{Binding Services}"
-                  Grid.Row="5" Grid.Column="1" Margin="5"/>
+        <ComboBox SelectedItem="{Binding SelectedService, Mode=TwoWay}"
+          DisplayMemberPath="Nom" SelectedValuePath="Id" ItemsSource="{Binding Services}"
+          Grid.Row="5" Grid.Column="1" Margin="5"/>
 
         <!-- Site -->
         <TextBlock Text="Site:" Grid.Row="6" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
         <ComboBox SelectedValue="{Binding EditedSalary.SiteId, Mode=TwoWay}"
-                  DisplayMemberPath="Ville" SelectedValuePath="Id" ItemsSource="{Binding Sites}"
-                  Grid.Row="6" Grid.Column="1" Margin="5"/>
+          DisplayMemberPath="Ville" SelectedValuePath="Id" ItemsSource="{Binding Sites}"
+          Grid.Row="6" Grid.Column="1" Margin="5"/>
 
         <!-- Boutons -->
         <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,10,0,0">

@@ -46,6 +46,9 @@
         <ComboBox x:Name="ServiceComboBox" Grid.Row="5" Grid.Column="1" Margin="5"
                   DisplayMemberPath="Nom" SelectedValue="{Binding SelectedService, Mode=TwoWay}"
                   SelectedValuePath="Id" ItemsSource="{Binding Services}"/>
+        <ComboBox SelectedItem="{Binding SelectedService, Mode=TwoWay}"
+          DisplayMemberPath="Nom" SelectedValuePath="Id"
+          ItemsSource="{Binding Services}" Grid.Row="5" Grid.Column="1" Margin="5"/>
 
         <!-- Site -->
         <TextBlock Text="Site:" Grid.Row="6" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>

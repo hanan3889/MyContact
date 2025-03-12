@@ -1,6 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Models;
@@ -17,27 +20,8 @@ namespace MyContact.ViewModels.Back
         public ObservableCollection<ServicesModel> Services { get; set; } = new();
         public ObservableCollection<Sites> Sites { get; set; } = new();
 
-        private ServicesModel? _selectedService;
-        public ServicesModel? SelectedService
-        {
-            get => _selectedService;
-            set
-            {
-                _selectedService = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Sites? _selectedSite;
-        public Sites? SelectedSite
-        {
-            get => _selectedSite;
-            set
-            {
-                _selectedSite = value;
-                OnPropertyChanged();
-            }
-        }
+        public ServicesModel? SelectedService { get; set; }
+        public Sites? SelectedSite { get; set; }
 
         public Salaries Salary
         {
@@ -69,7 +53,7 @@ namespace MyContact.ViewModels.Back
             _salariesService = new SalariesService();
             Salary = salary;
 
-            // Copier l'objet pour éviter la modification directe
+            // Copie pour ne pas modifier directement Salary
             EditedSalary = new Salaries
             {
                 Id = salary.Id,
@@ -90,41 +74,33 @@ namespace MyContact.ViewModels.Back
 
         private async Task LoadData()
         {
-            try
+            var services = await _salariesService.GetServicesAsync();
+            var sites = await _salariesService.GetSitesAsync();
+
+            Services.Clear();
+            foreach (var service in services)
             {
-                var services = await _salariesService.GetServicesAsync();
-                var sites = await _salariesService.GetSitesAsync();
-
-                if (services.Count == 0 || sites.Count == 0)
-                {
-                    // Gérer l'erreur si nécessaire
-                    return;
-                }
-
-                Services.Clear();
-                foreach (var service in services)
-                {
-                    Services.Add(service);
-                }
-
-                Sites.Clear();
-                foreach (var siteItem in sites)
-                {
-                    Sites.Add(siteItem);
-                }
-
-                SelectedService = Services.FirstOrDefault(s => s.Id == EditedSalary.ServiceId);
-                SelectedSite = Sites.FirstOrDefault(s => s.Id == EditedSalary.SiteId);
+                Services.Add(service);
             }
-            catch (Exception ex)
+
+            Sites.Clear();
+            foreach (var site in sites)
             {
-                // Gérer l'erreur si nécessaire
+                Sites.Add(site);
             }
+
+            // Sélectionner le service en fonction de l'ID du service actuel
+            SelectedService = Services.FirstOrDefault(s => s.Id == EditedSalary.ServiceId);
+            SelectedSite = Sites.FirstOrDefault(s => s.Id == EditedSalary.SiteId);
+
+            
+            OnPropertyChanged(nameof(SelectedService));
+            
         }
 
         private async Task Save()
         {
-            // Copier les modifications vers Salary avant d'enregistrer
+            // Apply the modifications to Salary
             Salary.Nom = EditedSalary.Nom;
             Salary.Prenom = EditedSalary.Prenom;
             Salary.TelephoneFixe = EditedSalary.TelephoneFixe;
