@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Models;
@@ -20,8 +19,35 @@ namespace MyContact.ViewModels.Back
         public ObservableCollection<ServicesModel> Services { get; set; } = new();
         public ObservableCollection<Sites> Sites { get; set; } = new();
 
-        public ServicesModel? SelectedService { get; set; }
-        public Sites? SelectedSite { get; set; }
+        private ServicesModel? _selectedService;
+        public ServicesModel? SelectedService
+        {
+            get => _selectedService;
+            set
+            {
+                _selectedService = value;
+                OnPropertyChanged();
+                if (_selectedService != null)
+                {
+                    EditedSalary.ServiceId = _selectedService.Id;
+                }
+            }
+        }
+
+        private Sites? _selectedSite;
+        public Sites? SelectedSite
+        {
+            get => _selectedSite;
+            set
+            {
+                _selectedSite = value;
+                OnPropertyChanged();
+                if (_selectedSite != null)
+                {
+                    EditedSalary.SiteId = _selectedSite.Id;
+                }
+            }
+        }
 
         public Salaries Salary
         {
@@ -66,7 +92,7 @@ namespace MyContact.ViewModels.Back
                 SiteId = salary.SiteId
             };
 
-            SaveCommand = new RelayCommand(async (param) => await Save(), (param) => CanSave());
+            SaveCommand = new RelayCommand(async (param) => await Save());
             CancelCommand = new RelayCommand((param) => Cancel());
 
             _ = LoadData();
@@ -93,9 +119,8 @@ namespace MyContact.ViewModels.Back
             SelectedService = Services.FirstOrDefault(s => s.Id == EditedSalary.ServiceId);
             SelectedSite = Sites.FirstOrDefault(s => s.Id == EditedSalary.SiteId);
 
-            
             OnPropertyChanged(nameof(SelectedService));
-            
+            OnPropertyChanged(nameof(SelectedSite));
         }
 
         private async Task Save()
@@ -115,8 +140,6 @@ namespace MyContact.ViewModels.Back
                 OnSaveCompleted?.Invoke(this, true);
             }
         }
-
-        private bool CanSave() => !string.IsNullOrWhiteSpace(EditedSalary.Nom) && !string.IsNullOrWhiteSpace(EditedSalary.Email);
 
         private void Cancel()
         {

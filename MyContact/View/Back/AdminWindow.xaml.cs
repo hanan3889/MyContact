@@ -81,18 +81,8 @@ namespace MyContact.View
 
                 if (result == true)
                 {
-                    var updatedSalary = _allSalaries.FirstOrDefault(s => s.Id == salary.Id);
-                    if (updatedSalary != null)
-                    {
-                        updatedSalary.Nom = salary.Nom;
-                        updatedSalary.Prenom = salary.Prenom;
-                        updatedSalary.TelephoneFixe = salary.TelephoneFixe;
-                        updatedSalary.TelephonePortable = salary.TelephonePortable;
-                        updatedSalary.Email = salary.Email;
-
-                        // Mise à jour du DataGrid
-                        SalariesDataGrid.Items.Refresh();
-                    }
+                    // Recharger les données pour s'assurer que le DataGrid est correctement mis à jour
+                    await LoadSalaries();
                 }
             }
         }
