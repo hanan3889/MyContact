@@ -1,12 +1,13 @@
 ﻿<Window x:Class="MyContact.View.EditSalaryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Modifier Salarié"
-        Height="300" Width="400"
-        WindowStartupLocation="CenterOwner">
-
-    <Grid Margin="20">
+        Title="Modifier Salarié" Height="400" Width="500"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -15,30 +16,45 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Nom :" Grid.Row="0" FontSize="14" FontWeight="Bold"/>
-        <TextBox Text="{Binding EditedSalary.Nom, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Row="0" Margin="80,0,0,5"
-                  />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Prénom :" Grid.Row="1" FontSize="14" FontWeight="Bold"/>
-        <TextBox Text="{Binding EditedSalary.Prenom, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Row="1" Margin="80,0,0,5"
-                />
+        <!-- Nom -->
+        <TextBlock Text="Nom:" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding EditedSalary.Nom, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
-        <TextBlock Text="Tél Fixe :" Grid.Row="2" FontSize="14" FontWeight="Bold"/>
-        <TextBox Text="{Binding EditedSalary.TelephoneFixe, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Row="2" Margin="80,0,0,5"
-                  />
+        <!-- Prénom -->
+        <TextBlock Text="Prénom:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding EditedSalary.Prenom, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="5"/>
 
-        <TextBlock Text="Tél Portable :" Grid.Row="3" FontSize="14" FontWeight="Bold"/>
-        <TextBox Text="{Binding EditedSalary.TelephonePortable, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Row="3" Margin="80,0,0,5" />
+        <!-- Email -->
+        <TextBlock Text="Email:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding EditedSalary.Email, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
-        <TextBlock Text="Email :" Grid.Row="4" FontSize="14" FontWeight="Bold"/>
-        <TextBox Text="{Binding EditedSalary.Email, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Row="4" Margin="80,0,0,5" />
+        <!-- Téléphone Fixe -->
+        <TextBlock Text="Téléphone Fixe:" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding EditedSalary.TelephoneFixe, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" Margin="5"/>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="5" Margin="0,10,0,0">
+        <!-- Téléphone Portable -->
+        <TextBlock Text="Téléphone Portable:" Grid.Row="4" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <TextBox Text="{Binding EditedSalary.TelephonePortable, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+        <!-- Service -->
+        <TextBlock Text="Service:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <ComboBox SelectedValue="{Binding EditedSalary.ServiceId, Mode=TwoWay}"
+                  DisplayMemberPath="Nom" SelectedValuePath="Id" ItemsSource="{Binding Services}"
+                  Grid.Row="5" Grid.Column="1" Margin="5"/>
+
+        <!-- Site -->
+        <TextBlock Text="Site:" Grid.Row="6" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
+        <ComboBox SelectedValue="{Binding EditedSalary.SiteId, Mode=TwoWay}"
+                  DisplayMemberPath="Ville" SelectedValuePath="Id" ItemsSource="{Binding Sites}"
+                  Grid.Row="6" Grid.Column="1" Margin="5"/>
+
+        <!-- Boutons -->
+        <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,10,0,0">
             <Button Content="Annuler"
                     Width="80"
                     Margin="5"
