@@ -23,15 +23,18 @@
 
         <!-- Nom -->
         <TextBlock Text="Nom:" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <TextBox x:Name="NomTextBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="NomTextBox" Grid.Row="0" Grid.Column="1" Margin="5" 
+                 Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- Prénom -->
         <TextBlock Text="Prénom:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <TextBox x:Name="PrenomTextBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="PrenomTextBox" Grid.Row="1" Grid.Column="1" Margin="5" 
+                 Text="{Binding Prenom, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- Email -->
         <TextBlock Text="Email:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <TextBox x:Name="EmailTextBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="EmailTextBox" Grid.Row="2" Grid.Column="1" Margin="5"
+                 Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- Téléphone Fixe -->
         <TextBlock Text="Téléphone Fixe:" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
@@ -44,21 +47,19 @@
         <!-- Service -->
         <TextBlock Text="Service:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
         <ComboBox x:Name="ServiceComboBox" Grid.Row="5" Grid.Column="1" Margin="5"
-                  DisplayMemberPath="Nom" SelectedValue="{Binding SelectedService, Mode=TwoWay}"
+                  DisplayMemberPath="Nom" SelectedItem="{Binding SelectedService, Mode=TwoWay}"
                   SelectedValuePath="Id" ItemsSource="{Binding Services}"/>
-        <ComboBox SelectedItem="{Binding SelectedService, Mode=TwoWay}"
-          DisplayMemberPath="Nom" SelectedValuePath="Id"
-          ItemsSource="{Binding Services}" Grid.Row="5" Grid.Column="1" Margin="5"/>
 
         <!-- Site -->
         <TextBlock Text="Site:" Grid.Row="6" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
         <ComboBox x:Name="SiteComboBox" Grid.Row="6" Grid.Column="1" Margin="5"
-                  DisplayMemberPath="Ville" SelectedValue="{Binding SelectedSite, Mode=TwoWay}"
+                  DisplayMemberPath="Ville" SelectedItem="{Binding SelectedSite, Mode=TwoWay}"
                   SelectedValuePath="Id" ItemsSource="{Binding Sites}"/>
 
         <!-- Bouton Ajouter -->
         <Button Content="Ajouter" Grid.Row="7" Grid.ColumnSpan="2" Margin="10" Padding="10"
                 Background="#339c33" Foreground="White" FontSize="14" 
-                Click="AjouterButton_Click" HorizontalAlignment="Center"/>
+                Click="AjouterButton_Click" HorizontalAlignment="Center"
+                IsEnabled="{Binding IsValid}" />
     </Grid>
 </Window>
