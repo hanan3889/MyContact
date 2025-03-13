@@ -47,9 +47,17 @@ namespace MyContact.Services
             return JsonConvert.DeserializeObject<Users>(json);
         }
 
-        internal async Task AuthenticateUser(string email, string password, object secretCode)
+        public async Task<Users?> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _httpClient.GetAsync($"/api/Users/email/{email}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            string json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Users>(json);
         }
     }
 }

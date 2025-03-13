@@ -4,6 +4,7 @@ using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Services;
 using MyContact.View;
+using System.Threading.Tasks;
 
 namespace MyContact.ViewModels.Front
 {
@@ -11,13 +12,15 @@ namespace MyContact.ViewModels.Front
     {
         private readonly UsersService _usersService;
         private string _email;
+        private string _password;
+        private string _secretCode;
 
         public ICommand LoginCommand { get; }
 
         public LoginViewModel()
         {
             _usersService = new UsersService("http://localhost:5110");
-            LoginCommand = new RelayCommand(async (parameter) => await Login(parameter));
+            LoginCommand = new RelayCommand(async (parameter) => await Login());
 
             // Champ email préremplis
             Email = "admin@blocalimentation.fr";
@@ -33,53 +36,68 @@ namespace MyContact.ViewModels.Front
             }
         }
 
-        private async Task Login(object parameter)
+        public string Password
         {
-            if (parameter is string[] passwords && passwords.Length == 2)
+            get => _password;
+            set
             {
-                string password = passwords[0];
-                string secretCode = passwords[1];
+                _password = value;
+                OnPropertyChanged();
+            }
+        }
 
-                if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(secretCode))
-                {
-                    MessageBox.Show("Veuillez entrer un email, un mot de passe et un code secret.");
-                    return;
-                }
+        public string SecretCode
+        {
+            get => _secretCode;
+            set
+            {
+                _secretCode = value;
+                OnPropertyChanged();
+            }
+        }
 
-                var user = await _usersService.AuthenticateUser(Email, password, secretCode);
+        public async Task LoadPassword()
+        {
+            var user = await _usersService.GetUserByEmail(Email);
+            if (user != null)
+            {
+                Password = "azerty";
+            }
+        }
 
-                if (user == null)
-                {
-                    
-                    MessageBox.Show("Email, mot de passe ou code secret incorrect.");
-                    return;
-                }
+        public async Task Login()
+        {
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(SecretCode))
+            {
+                MessageBox.Show("Veuillez entrer un email, un mot de passe et un code secret.");
+                return;
+            }
 
-                // Vérifie si l'utilisateur est admin
-                if (user.Roles == 0) // 0 = Admin
-                {
-                    MessageBox.Show("Connexion réussie !");
+            var user = await _usersService.AuthenticateUser(Email, Password, SecretCode);
 
-                    // Ouvrir AdminWindow
-                    AdminWindow adminWindow = new AdminWindow();
-                    adminWindow.Show();
+            if (user == null)
+            {
+                MessageBox.Show("Email, mot de passe ou code secret incorrect.");
+                return;
+            }
 
-                    CloseLoginWindow();
-                }
-                else
-                {
-                    MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.");
-                }
+            if (user.Roles == 0)
+            {
+                MessageBox.Show("Connexion réussie !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                AdminWindow adminWindow = new AdminWindow();
+                adminWindow.Show();
+
+                CloseLoginWindow();
             }
             else
             {
-                MessageBox.Show("Erreur lors de la récupération du mot de passe ou du code secret.");
+                MessageBox.Show("Accès refusé. Vous n'êtes pas administrateur.", "Avertissement", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void CloseLoginWindow()
         {
-            // Trouve et ferme la fenêtre de connexion
             var loginWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is LoginWindow);
             loginWindow?.Close();
         }
