@@ -24,6 +24,7 @@ namespace MyContact.View
                 _nom = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsValid));
+                UpdateEmail();
             }
         }
 
@@ -36,6 +37,7 @@ namespace MyContact.View
                 _prenom = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsValid));
+                UpdateEmail();
             }
         }
 
@@ -45,14 +47,7 @@ namespace MyContact.View
             get => _email;
             set
             {
-                if (!value.Contains("@"))
-                {
-                    _email = value + "@blocalimentation.fr";
-                }
-                else
-                {
-                    _email = value;
-                }
+                _email = value;
                 OnPropertyChanged();
             }
         }
@@ -123,11 +118,19 @@ namespace MyContact.View
             }
         }
 
+        private void UpdateEmail()
+        {
+            if (!string.IsNullOrWhiteSpace(Nom) && !string.IsNullOrWhiteSpace(Prenom))
+            {
+                Email = $"{Prenom.ToLower()}.{Nom.ToLower()}@blocalimentation.fr";
+            }
+        }
+
         private async void AjouterButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedService == null || SelectedSite == null)
             {
-                MessageBox.Show("Veuillez sélectionner un service et un site.");
+                MessageBox.Show("Veuillez sélectionner un service et un site.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -142,18 +145,19 @@ namespace MyContact.View
                 SiteId = SelectedSite.Id
             };
 
-            
             bool success = await _salariesService.CreateSalaryAsync(newSalary);
 
             if (success)
             {
-                MessageBox.Show("Salarié ajouté avec succès !");
+                MessageBox.Show("Salarié ajouté avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                
                 this.DialogResult = true;
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Erreur lors de l'ajout du salarié.");
+                MessageBox.Show("Erreur lors de l'ajout du salarié.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 
