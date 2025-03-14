@@ -80,7 +80,7 @@ namespace MyContact.ViewModels.Front
                 if (success)
                 {
                     await LoadSites();
-                    MessageBox.Show("Site ajouté avec succès !");
+                    MessageBox.Show("Site ajouté avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
@@ -109,7 +109,7 @@ namespace MyContact.ViewModels.Front
                     {
                         Sites[index] = updatedSite;
                     }
-                    MessageBox.Show("Site modifié avec succès !");
+                    MessageBox.Show("Site modifié avec succès !","Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
