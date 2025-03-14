@@ -39,4 +39,10 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="secrets.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

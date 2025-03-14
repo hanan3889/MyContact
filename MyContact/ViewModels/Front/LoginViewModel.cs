@@ -77,7 +77,7 @@ namespace MyContact.ViewModels.Front
 
             if (user == null)
             {
-                MessageBox.Show("Email, mot de passe ou code secret incorrect.");
+                MessageBox.Show("Email, mot de passe ou code secret incorrect.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -12,21 +14,43 @@ namespace MyContact.Services
     public class SitesService
     {
         private readonly HttpClient _httpClient;
+        private readonly string _apiKey;
 
         public object Id { get; private set; }
 
         public SitesService()
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5110") };
+            // on utilise le fichier de configuration secrets.config pour récupérer les secrets
+            var configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secrets.config");
+
+            // Vérifiez si le fichier existe
+            if (!File.Exists(configFilePath))
+            {
+                throw new FileNotFoundException("Le fichier de configuration des secrets est introuvable.", configFilePath);
+            }
+
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = configFilePath };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+
+            _httpClient = new HttpClient { BaseAddress = new Uri(config.AppSettings.Settings["ApiBaseUrl"].Value) };
+            _apiKey = config.AppSettings.Settings["ApiKey"].Value;
+            AddApiKeyHeader();
         }
 
-        
-        // Récupérer tous les services
+        private void AddApiKeyHeader()
+        {
+            if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
+            }
+        }
+
+        // Récupérer tous les sites
         public async Task<List<Sites>> GetSitesAsync()
         {
             try
             {
-                var url = "https://localhost:7140/api/Sites";
+                var url = "api/Sites";
                 var response = await _httpClient.GetAsync(url);
 
                 if (!response.IsSuccessStatusCode)
@@ -58,7 +82,8 @@ namespace MyContact.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"/api/Sites/get/name/{ville}");
+                var url = $"/api/Sites/get/name/{ville}";
+                var response = await _httpClient.GetAsync(url);
                 var content = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
@@ -70,7 +95,7 @@ namespace MyContact.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur lors de la récupération des salariés : {ex.Message}");
+                MessageBox.Show($"Erreur lors de la récupération des salariés : {ex.Message}", "Erreur");
                 return new List<Salaries>();
             }
         }
@@ -82,7 +107,8 @@ namespace MyContact.Services
             {
                 var json = JsonSerializer.Serialize(site);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync("/api/Sites", content);
+                var url = "/api/Sites";
+                var response = await _httpClient.PostAsync(url, content);
 
                 return response.IsSuccessStatusCode;
             }
@@ -100,7 +126,8 @@ namespace MyContact.Services
             {
                 var json = JsonSerializer.Serialize(site);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PutAsync($"/api/Sites/{site.Id}", content);
+                var url = $"/api/Sites/{site.Id}";
+                var response = await _httpClient.PutAsync(url, content);
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -115,7 +142,7 @@ namespace MyContact.Services
         {
             try
             {
-                var url = $"https://localhost:7140/api/Sites/{id}";
+                var url = $"/api/Sites/{id}";
                 var response = await _httpClient.DeleteAsync(url);
 
                 if (response.IsSuccessStatusCode)
