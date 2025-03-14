@@ -1,6 +1,11 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using MyContact.Models;
 
@@ -9,17 +14,44 @@ namespace MyContact.Services
     public class ServicesService
     {
         private readonly HttpClient _httpClient;
+        private readonly string _apiKey;
+
+        public Uri BaseAddress { get; }
 
         public ServicesService()
         {
+            // on utilise le fichier de configuration secrets.config pour récupérer les secrets
+            var configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secrets.config");
+
+            // Vérifiez si le fichier existe
+            if (!File.Exists(configFilePath))
+            {
+                throw new FileNotFoundException("Le fichier de configuration des secrets est introuvable.", configFilePath);
+            }
+
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = configFilePath };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+
             _httpClient = new HttpClient();
+            BaseAddress = new Uri(config.AppSettings.Settings["ApiBaseUrl"].Value);
+            _httpClient.BaseAddress = BaseAddress;
+            _apiKey = config.AppSettings.Settings["ApiKey"].Value;
+            AddApiKeyHeader();
+        }
+
+        private void AddApiKeyHeader()
+        {
+            if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
+            }
         }
 
         public async Task<List<Salaries>> GetSalariesByServiceNameAsync(string serviceName)
         {
             try
             {
-                var url = $"http://localhost:5110/api/Services/get/name/{serviceName}";
+                var url = $"api/Services/get/name/{serviceName}";
                 var response = await _httpClient.GetAsync(url);
                 var content = await response.Content.ReadAsStringAsync();
 
@@ -34,16 +66,16 @@ namespace MyContact.Services
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Exception : {ex.Message}", "Erreur");
                 return new List<Salaries>();
             }
         }
 
-        // Récupérer tous les services
         public async Task<List<ServicesModel>> GetAllServicesAsync()
         {
             try
             {
-                var url = "https://localhost:7140/api/Services";
+                var url = "api/Services";
                 var response = await _httpClient.GetAsync(url);
 
                 if (!response.IsSuccessStatusCode)
@@ -73,12 +105,11 @@ namespace MyContact.Services
             }
         }
 
-        // Ajouter un nouveau service
         public async Task<bool> AddServiceAsync(ServicesModel newService)
         {
             try
             {
-                var url = "https://localhost:7140/api/Services";
+                var url = "api/Services";
                 var response = await _httpClient.PostAsJsonAsync(url, newService);
 
                 if (response.IsSuccessStatusCode)
@@ -98,12 +129,11 @@ namespace MyContact.Services
             }
         }
 
-        // Supprimer un service
         public async Task<bool> DeleteServiceAsync(int serviceId)
         {
             try
             {
-                var url = $"https://localhost:7140/api/Services/{serviceId}";
+                var url = $"api/Services/{serviceId}";
                 var response = await _httpClient.DeleteAsync(url);
 
                 if (response.IsSuccessStatusCode)
@@ -123,12 +153,11 @@ namespace MyContact.Services
             }
         }
 
-        // Mettre à jour un service
         public async Task<bool> UpdateServiceAsync(ServicesModel updatedService)
         {
             try
             {
-                var url = $"https://localhost:7140/api/Services/{updatedService.Id}";
+                var url = $"api/Services/{updatedService.Id}";
                 var response = await _httpClient.PutAsJsonAsync(url, updatedService);
 
                 if (response.IsSuccessStatusCode)
