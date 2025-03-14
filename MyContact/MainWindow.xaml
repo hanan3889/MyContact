@@ -72,7 +72,6 @@
                    DockPanel.Dock="Right"
                    VerticalAlignment="Top"/>
 
-            <!-- Boutons Connexion et Enregistrement à droite -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button x:Name="LoginButton" Content="Connexion Admin"
                         Width="150"
@@ -93,7 +92,6 @@
             </StackPanel>
         </DockPanel>
 
-        <!-- Autre contenu de la fenêtre -->
         <Image Grid.Row="1" Source="Images/blocalimentation-logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>
