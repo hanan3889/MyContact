@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using MyContact.Commands;
 using MyContact.Models;
@@ -12,6 +15,39 @@ namespace MyContact.ViewModels.Back
         private readonly SalariesService _salariesService;
         private Salaries _salary;
         private Salaries _editedSalary;
+
+        public ObservableCollection<ServicesModel> Services { get; set; } = new();
+        public ObservableCollection<Sites> Sites { get; set; } = new();
+
+        private ServicesModel? _selectedService;
+        public ServicesModel? SelectedService
+        {
+            get => _selectedService;
+            set
+            {
+                _selectedService = value;
+                OnPropertyChanged();
+                if (_selectedService != null)
+                {
+                    EditedSalary.ServiceId = _selectedService.Id;
+                }
+            }
+        }
+
+        private Sites? _selectedSite;
+        public Sites? SelectedSite
+        {
+            get => _selectedSite;
+            set
+            {
+                _selectedSite = value;
+                OnPropertyChanged();
+                if (_selectedSite != null)
+                {
+                    EditedSalary.SiteId = _selectedSite.Id;
+                }
+            }
+        }
 
         public Salaries Salary
         {
@@ -43,7 +79,7 @@ namespace MyContact.ViewModels.Back
             _salariesService = new SalariesService();
             Salary = salary;
 
-            // Copier l'objet pour éviter la modification directe
+            // Copie pour ne pas modifier directement Salary
             EditedSalary = new Salaries
             {
                 Id = salary.Id,
@@ -51,21 +87,52 @@ namespace MyContact.ViewModels.Back
                 Prenom = salary.Prenom,
                 TelephoneFixe = salary.TelephoneFixe,
                 TelephonePortable = salary.TelephonePortable,
-                Email = salary.Email
+                Email = salary.Email,
+                ServiceId = salary.ServiceId,
+                SiteId = salary.SiteId
             };
 
-            SaveCommand = new RelayCommand(async (param) => await Save(), (param) => CanSave());
+            SaveCommand = new RelayCommand(async (param) => await Save());
             CancelCommand = new RelayCommand((param) => Cancel());
+
+            _ = LoadData();
+        }
+
+        private async Task LoadData()
+        {
+            var services = await _salariesService.GetServicesAsync();
+            var sites = await _salariesService.GetSitesAsync();
+
+            Services.Clear();
+            foreach (var service in services)
+            {
+                Services.Add(service);
+            }
+
+            Sites.Clear();
+            foreach (var site in sites)
+            {
+                Sites.Add(site);
+            }
+
+            // Sélectionner le service en fonction de l'ID du service actuel
+            SelectedService = Services.FirstOrDefault(s => s.Id == EditedSalary.ServiceId);
+            SelectedSite = Sites.FirstOrDefault(s => s.Id == EditedSalary.SiteId);
+
+            OnPropertyChanged(nameof(SelectedService));
+            OnPropertyChanged(nameof(SelectedSite));
         }
 
         private async Task Save()
         {
-            // Copier les modifications vers Salary avant d'enregistrer
+            // Apply the modifications to Salary
             Salary.Nom = EditedSalary.Nom;
             Salary.Prenom = EditedSalary.Prenom;
             Salary.TelephoneFixe = EditedSalary.TelephoneFixe;
             Salary.TelephonePortable = EditedSalary.TelephonePortable;
             Salary.Email = EditedSalary.Email;
+            Salary.ServiceId = SelectedService?.Id ?? 0;
+            Salary.SiteId = SelectedSite?.Id ?? 0;
 
             bool success = await _salariesService.UpdateSalaryAsync(Salary);
             if (success)
@@ -73,8 +140,6 @@ namespace MyContact.ViewModels.Back
                 OnSaveCompleted?.Invoke(this, true);
             }
         }
-
-        private bool CanSave() => !string.IsNullOrWhiteSpace(EditedSalary.Nom) && !string.IsNullOrWhiteSpace(EditedSalary.Email);
 
         private void Cancel()
         {

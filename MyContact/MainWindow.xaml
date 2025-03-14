@@ -65,6 +65,13 @@
                         Style="{StaticResource RoundedButtonStyle}" />
             </StackPanel>
 
+            <!-- Logo MyContact à droite -->
+            <Image Source="Images/MyContact.png"
+                   Width="80" Height="80"
+                   Margin="10"
+                   DockPanel.Dock="Right"
+                   VerticalAlignment="Top"/>
+
             <!-- Boutons Connexion et Enregistrement à droite -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button x:Name="LoginButton" Content="Connexion Admin"
@@ -85,6 +92,8 @@
                         Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
         </DockPanel>
+
+        <!-- Autre contenu de la fenêtre -->
         <Image Grid.Row="1" Source="Images/blocalimentation-logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

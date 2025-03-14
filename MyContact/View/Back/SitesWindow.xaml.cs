@@ -31,7 +31,7 @@ namespace MyContact.View
                 bool success = await _sitesService.AddSiteAsync(newSite);
                 if (success)
                 {
-                    MessageBox.Show("Site ajouté avec succès !");
+                    MessageBox.Show("Site ajouté avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace MyContact.View
                         bool success = await _sitesService.UpdateSiteAsync(updatedSite);
                         if (success)
                         {
-                            MessageBox.Show("Site modifié avec succès !");
+                            MessageBox.Show("Site modifié avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
@@ -90,7 +90,7 @@ namespace MyContact.View
                     bool success = await _sitesService.DeleteSiteAsync(selectedSite.Id);
                     if (success)
                     {
-                        MessageBox.Show("Site supprimé avec succès !");
+                        MessageBox.Show("Site supprimé avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {

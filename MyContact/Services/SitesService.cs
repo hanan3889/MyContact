@@ -13,38 +13,14 @@ namespace MyContact.Services
     {
         private readonly HttpClient _httpClient;
 
+        public object Id { get; private set; }
+
         public SitesService()
         {
             _httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5110") };
         }
 
-        // Récupération de tous les sites
-        //public async Task<List<Sites>> GetSitesAsync()
-        //{
-        //    try
-        //    {
-        //        //var response = await _httpClient.GetAsync("https://localhost:7140/api/Sites");
-        //        //var content = await response.Content.ReadAsStringAsync();
-
-        //        var url = "https://localhost:7140/api/Sites";
-        //        var response = await _httpClient.GetAsync(url);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
-        //            return new List<Sites>();
-        //        }
-        //        var content = await response.Content.ReadAsStringAsync();
-
-        //        return JsonSerializer.Deserialize<List<Sites>>(content) ?? new List<Sites>();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Erreur lors de la récupération des sites : {ex.Message}");
-        //        return new List<Sites>();
-        //    }
-        //}
-
+        
         // Récupérer tous les services
         public async Task<List<Sites>> GetSitesAsync()
         {
@@ -134,9 +110,33 @@ namespace MyContact.Services
             }
         }
 
-        internal async Task<bool> DeleteSiteAsync(int id)
+        // Supprimer un site
+        public async Task<bool> DeleteSiteAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var url = $"https://localhost:7140/api/Sites/{id}";
+                var response = await _httpClient.DeleteAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        MessageBox.Show("Le site a été supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception : {ex.Message}", "Erreur");
+                return false;
+            }
         }
     }
 }
