@@ -1,14 +1,11 @@
-﻿<controls:MetroWindow x:Class="MyContact.MainWindow"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:MyContact"
-                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      xmlns:viewmodels="clr-namespace:MyContact.ViewModels"
-                      d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
-                      mc:Ignorable="d"
-                      Title="Accueil" Height="450" Width="800">
+﻿<Window x:Class="MyContact.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyContact"
+        mc:Ignorable="d"
+        Title="Accueil" Height="450" Width="800">
 
     <Window.Resources>
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
@@ -36,7 +33,6 @@
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -69,15 +65,22 @@
                         Style="{StaticResource RoundedButtonStyle}" />
             </StackPanel>
 
-            <!-- Boutons Connexion et Enregistrement à droite -->
+            <!-- Logo MyContact à droite -->
+            <Image Source="Images/MyContact.png"
+                   Width="80" Height="80"
+                   Margin="10"
+                   DockPanel.Dock="Right"
+                   VerticalAlignment="Top"/>
+
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                <Button Content="Connexion Admin"
+                <Button x:Name="LoginButton" Content="Connexion Admin"
                         Width="150"
                         Height="30"
                         Margin="10"
                         Padding="0"
                         Command="{Binding OpenLoginCommand}"
-                        Style="{StaticResource RoundedButtonStyle}"/>
+                        Style="{StaticResource RoundedButtonStyle}"
+                        Visibility="Collapsed"/>
 
                 <Button Content="S'enregistrer"
                         Width="150"
@@ -89,20 +92,6 @@
             </StackPanel>
         </DockPanel>
 
-        <DataGrid x:Name="ContactsDataGrid"
-                  Grid.Row="1"
-                  AutoGenerateColumns="False"
-                  Margin="10"
-                  ItemsSource="{Binding Salaries}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
-                <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" />
-                <DataGridTextColumn Header="Téléphone portable" Binding="{Binding TelephonePortable}" />
-                <DataGridTextColumn Header="Ligne fixe" Binding="{Binding TelephoneFixe}" />
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
-                <DataGridTextColumn Header="Ville" Binding="{Binding SiteVille}" />
-                <DataGridTextColumn Header="Service" Binding="{Binding ServiceNom}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Image Grid.Row="1" Source="Images/blocalimentation-logo.png" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
-</controls:MetroWindow>
+</Window>

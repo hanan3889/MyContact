@@ -33,5 +33,6 @@ namespace MyContact.Models
 
         [JsonPropertyName("serviceId")]
         public int ServiceId { get; set; }
+        public bool IsSelected { get; set; }
     }
 }
