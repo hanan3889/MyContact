@@ -99,7 +99,8 @@ namespace MyContact.ViewModels.Front
             {
                 Salaries = new ObservableCollection<Salaries>(
                     _allSalaries.Where(s => s.Nom.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                            s.Prenom.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                                            s.Prenom.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                            s.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
                 );
             }
         }
