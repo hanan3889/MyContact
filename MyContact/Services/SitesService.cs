@@ -138,6 +138,45 @@ namespace MyContact.Services
         }
 
         // Supprimer un site
+        //public async Task<bool> DeleteSiteAsync(int id)
+        //{
+        //    try
+        //    {
+        //        // Vérifier s'il y a des salariés associés à ce site
+        //        var urlCheck = $"/api/Sites/getSalaries/{id}";
+        //        var responseCheck = await _httpClient.GetAsync(urlCheck);
+        //        if (responseCheck.IsSuccessStatusCode)
+        //        {
+        //            var contentCheck = await responseCheck.Content.ReadAsStringAsync();
+        //            var salaries = JsonSerializer.Deserialize<List<Salaries>>(contentCheck);
+        //            if (salaries != null && salaries.Count > 0)
+        //            {
+        //                MessageBox.Show("Impossible de supprimer ce site car des salariés y sont encore affectés.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        //                return false;
+        //            }
+        //        }
+
+        //        // Supprimer le site s'il n'y a pas de salariés associés
+        //        var url = $"/api/Sites/{id}";
+        //        var response = await _httpClient.DeleteAsync(url);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            MessageBox.Show("Le site a été supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
+        //            return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Exception : {ex.Message}", "Erreur");
+        //        return false;
+        //    }
+        //}
         public async Task<bool> DeleteSiteAsync(int id)
         {
             try
@@ -147,11 +186,14 @@ namespace MyContact.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-                    {
-                        MessageBox.Show("Le site a été supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
+                    MessageBox.Show("Le site a été supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                     return true;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(content, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
                 }
                 else
                 {
