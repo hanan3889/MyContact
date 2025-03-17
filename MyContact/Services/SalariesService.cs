@@ -16,6 +16,7 @@ namespace MyContact.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
 
+
         public SalariesService()
         {
             // on utilise le fichier de configuration secrets.config pour récupérer les secrets
