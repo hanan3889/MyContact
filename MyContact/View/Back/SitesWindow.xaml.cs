@@ -9,6 +9,7 @@ namespace MyContact.View
     {
         private readonly SitesViewModel _viewModel;
         private readonly SitesService _sitesService;
+
         public SitesWindow()
         {
             InitializeComponent();
@@ -25,12 +26,11 @@ namespace MyContact.View
             if (result == true)
             {
                 var newSite = addWindow.Site;
-                _viewModel.Sites.Add(newSite);
-
-
                 bool success = await _sitesService.AddSiteAsync(newSite);
+
                 if (success)
                 {
+                    _viewModel.Sites.Add(newSite);
                     MessageBox.Show("Site ajouté avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
@@ -53,12 +53,11 @@ namespace MyContact.View
                     var index = _viewModel.Sites.IndexOf(selectedSite);
                     if (index >= 0)
                     {
-                        _viewModel.Sites[index] = updatedSite;
-
-
                         bool success = await _sitesService.UpdateSiteAsync(updatedSite);
+
                         if (success)
                         {
+                            _viewModel.Sites[index] = updatedSite;
                             MessageBox.Show("Site modifié avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
@@ -84,12 +83,11 @@ namespace MyContact.View
 
                 if (result == MessageBoxResult.Yes)
                 {
-
-                    _viewModel.Sites.Remove(selectedSite);
-
                     bool success = await _sitesService.DeleteSiteAsync(selectedSite.Id);
+
                     if (success)
                     {
+                        _viewModel.Sites.Remove(selectedSite);
                         MessageBox.Show("Site supprimé avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
