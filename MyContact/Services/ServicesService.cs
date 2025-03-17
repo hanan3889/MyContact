@@ -20,13 +20,13 @@ namespace MyContact.Services
 
         public ServicesService()
         {
-            // on utilise le fichier de configuration secrets.config pour récupérer les secrets
+            // on utilise le fichier de configuration pour récupérer la clé API
             var configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secrets.config");
 
-            // Vérifiez si le fichier existe
+            // on vérifie si le fichier existe
             if (!File.Exists(configFilePath))
             {
-                throw new FileNotFoundException("Le fichier de configuration des secrets est introuvable.", configFilePath);
+                throw new FileNotFoundException("Le fichier de configuration secrets est introuvable.", configFilePath);
             }
 
             var configMap = new ExeConfigurationFileMap { ExeConfigFilename = configFilePath };
@@ -105,6 +105,7 @@ namespace MyContact.Services
             }
         }
 
+        //Ajout d'un service
         public async Task<bool> AddServiceAsync(ServicesModel newService)
         {
             try
@@ -142,7 +143,7 @@ namespace MyContact.Services
                 }
                 else
                 {
-                    MessageBox.Show($"Erreur API : {response.StatusCode}", "Erreur");
+                    
                     return false;
                 }
             }

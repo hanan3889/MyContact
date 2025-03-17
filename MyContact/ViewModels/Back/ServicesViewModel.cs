@@ -58,7 +58,7 @@ public class ServicesViewModel : ViewModelBase
         }
         else
         {
-            MessageBox.Show("Erreur lors de la suppression du service.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Erreur lors de la suppression du service car des salariés y sont associés.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

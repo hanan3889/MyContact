@@ -22,6 +22,7 @@ namespace MyContact.ViewModels.Front
             _salaries = new ObservableCollection<Salaries>();
             _sites = new ObservableCollection<Sites>();
             LoadSites();
+
         }
 
         public ObservableCollection<Sites> Sites
@@ -64,12 +65,44 @@ namespace MyContact.ViewModels.Front
             }
         }
 
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                FilterSalaries(); 
+            }
+        }
+        private List<Salaries> _allSalaries = new List<Salaries>(); // Liste complète pour la recherche
+
+
+
         public ICommand SearchCommand { get; }
 
         private async void LoadSites()
         {
             var sitesList = await _sitesService.GetSitesAsync();
             Sites = new ObservableCollection<Sites>(sitesList);
+        }
+
+        private void FilterSalaries()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                //on affiche tous les salariés si la recherche est vide
+                Salaries = new ObservableCollection<Salaries>(_allSalaries); 
+            }
+            else
+            {
+                Salaries = new ObservableCollection<Salaries>(
+                    _allSalaries.Where(s => s.Nom.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                            s.Prenom.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                            s.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                );
+            }
         }
 
         private async void SearchSalaryByCity(object parameter)
@@ -82,20 +115,19 @@ namespace MyContact.ViewModels.Front
 
             try
             {
+                //on récupère les salariés par ville
                 var salaries = await _sitesService.GetSalariesByCityAsync(SelectedSite.Ville);
-
-                Salaries.Clear(); // Nettoyage avant ajout de nouveaux résultats
 
                 if (salaries != null && salaries.Count > 0)
                 {
-                    foreach (var salary in salaries)
-                    {
-                        Salaries.Add(salary);
-                    }
+                    _allSalaries = salaries;
+                    FilterSalaries(); 
                     ResultText = $"{salaries.Count} salarié(s) trouvé(s).";
                 }
                 else
                 {
+                    _allSalaries.Clear();
+                    Salaries.Clear();
                     ResultText = "Aucun salarié trouvé.";
                 }
             }
@@ -104,5 +136,6 @@ namespace MyContact.ViewModels.Front
                 ResultText = $"Erreur: {ex.Message}";
             }
         }
+
     }
 }

@@ -23,7 +23,7 @@ namespace MyContact.Services
             // on utilise le fichier de configuration secrets.config pour récupérer les secrets
             var configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secrets.config");
 
-            // Vérifiez si le fichier existe
+            // on vérifie si le fichier existe
             if (!File.Exists(configFilePath))
             {
                 throw new FileNotFoundException("Le fichier de configuration des secrets est introuvable.", configFilePath);
@@ -147,11 +147,14 @@ namespace MyContact.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-                    {
-                        MessageBox.Show("Le site a été supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
+                    MessageBox.Show("Le site a été supprimé avec succès.", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
                     return true;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show(content, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
                 }
                 else
                 {

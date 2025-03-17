@@ -4,6 +4,7 @@ using MyContact.Commands;
 using MyContact.Models;
 using MyContact.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyContact.ViewModels.Front
@@ -14,13 +15,16 @@ namespace MyContact.ViewModels.Front
         private ObservableCollection<ServicesModel> _services;
         private ServicesModel _selectedService;
         private string _resultText;
+        private string _searchText;
         private ObservableCollection<Salaries> _salaries;
+        private ObservableCollection<Salaries> _allSalaries; // Stocke tous les résultats avant filtrage
 
         public SearchSalaryByServiceViewModel()
         {
             _servicesService = new ServicesService();
             SearchCommand = new RelayCommand(SearchSalaryByService);
             _salaries = new ObservableCollection<Salaries>();
+            _allSalaries = new ObservableCollection<Salaries>(); // Initialise la liste complète
             _services = new ObservableCollection<ServicesModel>();
             LoadServices();
         }
@@ -52,6 +56,17 @@ namespace MyContact.ViewModels.Front
             {
                 _resultText = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                FilterSalaries(); // Filtrer les salariés en temps réel
             }
         }
 
@@ -91,14 +106,16 @@ namespace MyContact.ViewModels.Front
             try
             {
                 var salaries = await _servicesService.GetSalariesByServiceNameAsync(SelectedService.Nom);
+                _allSalaries.Clear();
                 Salaries.Clear();
 
                 if (salaries != null && salaries.Count > 0)
                 {
                     foreach (var salary in salaries)
                     {
-                        Salaries.Add(salary);
+                        _allSalaries.Add(salary); // Stocke tous les résultats
                     }
+                    FilterSalaries(); // Appliquer le filtre initial
                     ResultText = $"{salaries.Count} salarié(s) trouvé(s).";
                 }
                 else
@@ -109,6 +126,23 @@ namespace MyContact.ViewModels.Front
             catch (Exception ex)
             {
                 ResultText = $"Erreur: {ex.Message}";
+            }
+        }
+
+        private void FilterSalaries()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                Salaries = new ObservableCollection<Salaries>(_allSalaries);
+            }
+            else
+            {
+                Salaries = new ObservableCollection<Salaries>(
+                    _allSalaries.Where(s =>
+                        s.Nom.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                        s.Prenom.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                        s.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                    ));
             }
         }
     }
