@@ -36,6 +36,7 @@ namespace MyContact.View
             }
         }
 
+        // Recherche de salariés 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string searchText = SearchTextBox.Text.ToLower();

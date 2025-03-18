@@ -36,6 +36,7 @@ namespace MyContact.Services
             AddApiKeyHeader();
         }
 
+        // Ajoute l'en-tête d'authentification à la requête
         private void AddApiKeyHeader()
         {
             if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
@@ -44,6 +45,7 @@ namespace MyContact.Services
             }
         }
 
+        // Récupère la liste des salariés
         public async Task<List<Salaries>> GetSalariesAsync()
         {
             var url = "api/Salaries/get/all";
@@ -56,6 +58,7 @@ namespace MyContact.Services
             return new List<Salaries>();
         }
 
+        //Crée un salarié
         public async Task<bool> CreateSalaryAsync(Salaries salary)
         {
             var json = JsonSerializer.Serialize(salary, new JsonSerializerOptions { WriteIndented = true });
@@ -67,6 +70,7 @@ namespace MyContact.Services
             return response.IsSuccessStatusCode;
         }
 
+        // Met à jour un salarié
         public async Task<bool> UpdateSalaryAsync(Salaries salary)
         {
             var json = JsonSerializer.Serialize(salary);
@@ -76,6 +80,7 @@ namespace MyContact.Services
             return response.IsSuccessStatusCode;
         }
 
+        //Supprime un salarié
         public async Task<bool> DeleteSalaryAsync(int id)
         {
             var url = $"api/Salaries/delete/{id}";
@@ -83,6 +88,7 @@ namespace MyContact.Services
             return response.IsSuccessStatusCode;
         }
 
+        //Récupère un salarié par son nom
         public async Task<List<Salaries>> GetSalariesByNameAsync(string name)
         {
             var url = $"api/Salaries/get/name/{name}";
@@ -95,6 +101,7 @@ namespace MyContact.Services
             return new List<Salaries>();
         }
 
+        //Récupère tous les services
         public async Task<List<ServicesModel>> GetServicesAsync()
         {
             var url = "api/Services";
@@ -107,6 +114,7 @@ namespace MyContact.Services
             return new List<ServicesModel>();
         }
 
+        //Récupère tous les sites
         public async Task<List<Sites>> GetSitesAsync()
         {
             var url = "api/Sites";

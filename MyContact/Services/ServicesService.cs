@@ -20,7 +20,7 @@ namespace MyContact.Services
 
         public ServicesService()
         {
-            // on utilise le fichier de configuration pour récupérer la clé API
+            // on utilise le fichier de configuration secrets.config pour récupérer les secrets
             var configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secrets.config");
 
             // on vérifie si le fichier existe
@@ -39,6 +39,7 @@ namespace MyContact.Services
             AddApiKeyHeader();
         }
 
+        //Ajoute l'en-tête d'authentification à la requête
         private void AddApiKeyHeader()
         {
             if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
@@ -47,6 +48,7 @@ namespace MyContact.Services
             }
         }
 
+        //Récupère la liste des services par nom
         public async Task<List<Salaries>> GetSalariesByServiceNameAsync(string serviceName)
         {
             try
@@ -71,6 +73,7 @@ namespace MyContact.Services
             }
         }
 
+        //Récupère la liste de tous les services
         public async Task<List<ServicesModel>> GetAllServicesAsync()
         {
             try
@@ -130,6 +133,7 @@ namespace MyContact.Services
             }
         }
 
+        //Suppression d'un service
         public async Task<bool> DeleteServiceAsync(int serviceId)
         {
             try
@@ -154,6 +158,7 @@ namespace MyContact.Services
             }
         }
 
+        //Mise à jour d'un service
         public async Task<bool> UpdateServiceAsync(ServicesModel updatedService)
         {
             try
