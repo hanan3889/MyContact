@@ -37,6 +37,7 @@ namespace MyContact.Services
             AddApiKeyHeader();
         }
 
+        // Ajoute l'en-tête d'authentification à la requête
         private void AddApiKeyHeader()
         {
             if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))

@@ -12,11 +12,14 @@ namespace MyContact.View
 {
     public partial class AddSalaryWindow : Window, INotifyPropertyChanged
     {
+        
         private readonly SalariesService _salariesService;
 
         public ObservableCollection<ServicesModel> Services { get; set; } = new();
+
         public ObservableCollection<Sites> Sites { get; set; } = new();
 
+       
         private string _nom = "";
         public string Nom
         {
@@ -54,6 +57,7 @@ namespace MyContact.View
             }
         }
 
+        
         private string _telephoneFixe = "";
         public string TelephoneFixe
         {
@@ -92,10 +96,12 @@ namespace MyContact.View
             }
         }
 
+        // Vérifie si les informations sont valides
         public bool IsValid => !string.IsNullOrWhiteSpace(Nom) &&
                                !string.IsNullOrWhiteSpace(Prenom) &&
                                (IsValidPhoneNumber(TelephoneFixe) || IsValidPhoneNumber(TelephonePortable));
 
+        // Propriété pour le service sélectionné
         private ServicesModel? _selectedService;
         public ServicesModel? SelectedService
         {
@@ -107,6 +113,7 @@ namespace MyContact.View
             }
         }
 
+        
         private Sites? _selectedSite;
         public Sites? SelectedSite
         {
@@ -118,6 +125,7 @@ namespace MyContact.View
             }
         }
 
+        
         public AddSalaryWindow()
         {
             InitializeComponent();
@@ -126,6 +134,7 @@ namespace MyContact.View
             _ = LoadData();
         }
 
+        // Charge les données des services et des sites
         private async Task LoadData()
         {
             try
@@ -147,14 +156,17 @@ namespace MyContact.View
             }
         }
 
+        // Met à jour l'email en fonction du nom et du prénom
         private void UpdateEmail()
         {
             if (!string.IsNullOrWhiteSpace(Nom) && !string.IsNullOrWhiteSpace(Prenom))
             {
+                // Génère un email à partir du nom et du prénom et on ajoute le nom de domaine
                 Email = $"{Prenom.ToLower()}.{Nom.ToLower()}@blocalimentation.fr";
             }
         }
 
+    
         private async void AjouterButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedService == null || SelectedSite == null)
@@ -188,16 +200,19 @@ namespace MyContact.View
             }
         }
 
+        // Vérifie si un numéro de téléphone est valide
         private bool IsValidPhoneNumber(string phoneNumber)
         {
             return !string.IsNullOrWhiteSpace(phoneNumber) && Regex.IsMatch(phoneNumber, "^\\d+$");
         }
 
+        // Vérifie si une chaîne est numérique
         private bool IsNumeric(string value)
         {
             return Regex.IsMatch(value, "^\\d*$");
         }
 
+        
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null!)
         {

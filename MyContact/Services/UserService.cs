@@ -19,6 +19,7 @@ namespace MyContact.Services
             _httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
         }
 
+        // Enregistre un nouvel utilisateur
         public async Task<bool> RegisterUser(string email, string password, string secretCode)
         {
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
@@ -30,6 +31,7 @@ namespace MyContact.Services
             return response.IsSuccessStatusCode;
         }
 
+        // Authentifie un utilisateur
         public async Task<Users?> AuthenticateUser(string email, string password, string secretCode)
         {
             var userCredentials = new { Email = email, Password = password, SecretCode = secretCode };
@@ -47,6 +49,7 @@ namespace MyContact.Services
             return JsonConvert.DeserializeObject<Users>(json);
         }
 
+        // Récupère un utilisateur par son email
         public async Task<Users?> GetUserByEmail(string email)
         {
             HttpResponseMessage response = await _httpClient.GetAsync($"/api/Users/email/{email}");
