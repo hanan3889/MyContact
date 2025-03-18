@@ -20,6 +20,14 @@ MyContact est une application de bureau développée avec WPF (.NET 8.0) qui per
 - Recherche de contacts
 - Stockage persistant des données
 
+## Procédure d'installation de l'application avec l'exécutable
+- Télécharger le dossier .zip en suivant ce lien  [release]( https://github.com/hanan3889/MyContact/releases/tag/release) .
+- Décompresser le fichier et exécuter le fichier avec l'extension .exe
+- Double-cliquez sur le fichier d'installation téléchargé pour lancer le programme d'installation.
+- Autoriser l'installation.
+- Suivez les instructions à l'écran pour compléter l'installation. 
+- Une fois l'installation terminée, cliquez sur Terminer pour fermer le programme d'installation.
+
 ## Structure du projet
 - `App.xaml` / `App.xaml.cs` : Point d'entrée de l'application
 - `MainWindow.xaml` / `MainWindow.xaml.cs` : Fenêtre principale de l'application
