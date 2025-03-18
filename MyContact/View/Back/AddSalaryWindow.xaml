@@ -38,11 +38,13 @@
 
         <!-- Téléphone Fixe -->
         <TextBlock Text="Téléphone Fixe:" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <TextBox x:Name="TelephoneFixeTextBox" Grid.Row="3" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="TelephoneFixeTextBox" Grid.Row="3" Grid.Column="1" Margin="5"
+                 Text="{Binding TelephoneFixe, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- Téléphone Portable -->
         <TextBlock Text="Téléphone Portable:" Grid.Row="4" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
-        <TextBox x:Name="TelephonePortableTextBox" Grid.Row="4" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="TelephonePortableTextBox" Grid.Row="4" Grid.Column="1" Margin="5"
+                 Text="{Binding TelephonePortable, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- Service -->
         <TextBlock Text="Service:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Center"/>
