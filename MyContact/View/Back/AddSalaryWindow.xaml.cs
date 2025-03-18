@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using MyContact.Models;
@@ -52,7 +54,47 @@ namespace MyContact.View
             }
         }
 
-        public bool IsValid => !string.IsNullOrWhiteSpace(Nom) && !string.IsNullOrWhiteSpace(Prenom);
+        private string _telephoneFixe = "";
+        public string TelephoneFixe
+        {
+            get => _telephoneFixe;
+            set
+            {
+                if (IsNumeric(value) || string.IsNullOrEmpty(value))
+                {
+                    _telephoneFixe = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsValid));
+                }
+                else
+                {
+                    MessageBox.Show("Le numéro de téléphone fixe doit contenir uniquement des chiffres.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private string _telephonePortable = "";
+        public string TelephonePortable
+        {
+            get => _telephonePortable;
+            set
+            {
+                if (IsNumeric(value) || string.IsNullOrEmpty(value))
+                {
+                    _telephonePortable = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsValid));
+                }
+                else
+                {
+                    MessageBox.Show("Le numéro de téléphone portable doit contenir uniquement des chiffres.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        public bool IsValid => !string.IsNullOrWhiteSpace(Nom) &&
+                               !string.IsNullOrWhiteSpace(Prenom) &&
+                               (IsValidPhoneNumber(TelephoneFixe) || IsValidPhoneNumber(TelephonePortable));
 
         private ServicesModel? _selectedService;
         public ServicesModel? SelectedService
@@ -91,23 +133,10 @@ namespace MyContact.View
                 var services = await _salariesService.GetServicesAsync();
                 var sites = await _salariesService.GetSitesAsync();
 
-                if (services.Count == 0 || sites.Count == 0)
-                {
-                    MessageBox.Show("Aucune donnée récupérée. Vérifiez l'API.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
                 Services.Clear();
-                foreach (var service in services)
-                {
-                    Services.Add(service);
-                }
-
+                foreach (var service in services) Services.Add(service);
                 Sites.Clear();
-                foreach (var siteItem in sites)
-                {
-                    Sites.Add(siteItem);
-                }
+                foreach (var siteItem in sites) Sites.Add(siteItem);
 
                 SelectedService = Services.FirstOrDefault();
                 SelectedSite = Sites.FirstOrDefault();
@@ -139,8 +168,8 @@ namespace MyContact.View
                 Nom = Nom,
                 Prenom = Prenom,
                 Email = Email,
-                TelephoneFixe = TelephoneFixeTextBox.Text,
-                TelephonePortable = TelephonePortableTextBox.Text,
+                TelephoneFixe = TelephoneFixe,
+                TelephonePortable = TelephonePortable,
                 ServiceId = SelectedService.Id,
                 SiteId = SelectedSite.Id
             };
@@ -150,15 +179,23 @@ namespace MyContact.View
             if (success)
             {
                 MessageBox.Show("Salarié ajouté avec succès !", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
-                
                 this.DialogResult = true;
                 this.Close();
             }
             else
             {
                 MessageBox.Show("Erreur lors de l'ajout du salarié.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-
             }
+        }
+
+        private bool IsValidPhoneNumber(string phoneNumber)
+        {
+            return !string.IsNullOrWhiteSpace(phoneNumber) && Regex.IsMatch(phoneNumber, "^\\d+$");
+        }
+
+        private bool IsNumeric(string value)
+        {
+            return Regex.IsMatch(value, "^\\d*$");
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
